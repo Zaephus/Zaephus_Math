@@ -387,25 +387,19 @@ struct Matrix4x4 {
         return _lhs;
     }
 
-    Vector4 operator*=(const Vector4& _v) const {
+    friend Vector4 operator*(const Matrix4x4& _m, const Vector4& _v) {
         return {
-            this->m00 * _v.x + this->m01 * _v.y + this->m02 * _v.z + this->m03 * _v.w,
-            this->m10 * _v.x + this->m11 * _v.y + this->m12 * _v.z + this->m13 * _v.w,
-            this->m20 * _v.x + this->m21 * _v.y + this->m22 * _v.z + this->m23 * _v.w,
-            this->m30 * _v.x + this->m31 * _v.y + this->m32 * _v.z + this->m33 * _v.w
+           _m.m00 * _v.x + _m.m01 * _v.y + _m.m02 * _v.z + _m.m03 * _v.w,
+           _m.m10 * _v.x + _m.m11 * _v.y + _m.m12 * _v.z + _m.m13 * _v.w,
+           _m.m20 * _v.x + _m.m21 * _v.y + _m.m22 * _v.z + _m.m23 * _v.w,
+           _m.m30 * _v.x + _m.m31 * _v.y + _m.m32 * _v.z + _m.m33 * _v.w
         };
     }
 
-    Vector3 operator*=(const Vector3& _v) const {
-        return {
-            this->m00 * _v.x + this->m01 * _v.y + this->m02 * _v.z + this->m03,
-            this->m10 * _v.x + this->m11 * _v.y + this->m12 * _v.z + this->m13,
-            this->m20 * _v.x + this->m21 * _v.y + this->m22 * _v.z + this->m23
-        };
-    }
-    friend Matrix4x4 operator*(Matrix4x4 _m, const Vector3& _v) {
-        _m *= _v;
-        return _m;
+    friend Vector3 operator*(const Matrix4x4& _m, const Vector3& _v) {
+        Vector4 v(_v, 1.0f);
+        v = _m * v;
+        return { v.x, v.y, v.z };
     }
 
     Matrix4x4& operator*=(const float _s) {

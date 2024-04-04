@@ -6,6 +6,8 @@
 #include <string>
 #include <stdexcept>
 
+#include <Vectors/Vector3.h>
+
 struct Vector4 {
 
     float x;
@@ -30,6 +32,20 @@ struct Vector4 {
         y = _v.y;
         z = _v.z;
         w = _v.w;
+    }
+
+    Vector4(const Vector3& _v) {
+        x = _v.x;
+        y = _v.y;
+        z = _v.z;
+        w = 0;
+    }
+
+    Vector4(const Vector3& _v, const float _w) {
+        x = _v.x;
+        y = _v.y;
+        z = _v.z;
+        w = _w;
     }
 
     [[nodiscard]] float magnitude() const {
@@ -123,6 +139,9 @@ struct Vector4 {
     }
 
     Vector4& operator=(const Vector4& _v) = default;
+    Vector4& operator=(const Vector3& _v) {
+        return *this = Vector4(_v);
+    }
 
     friend bool operator==(const Vector4& _lhs, const Vector4& _rhs) {
         return _lhs.x == _rhs.x && _lhs.y == _rhs.y && _lhs.z == _rhs.z && _lhs.w == _rhs.w;
@@ -133,20 +152,15 @@ struct Vector4 {
 
     float operator[](const size_t _i) const {
         switch(_i) {
-            case 0:
-                return x;
-            case 1:
-                return y;
-            case 2:
-                return z;
-            case 3:
-                return w;
-            default:
-                throw std::out_of_range("Invalid index.");
+            case 0: return x;
+            case 1: return y;
+            case 2: return z;
+            case 3: return w;
+            default: throw std::out_of_range("Invalid index.");
         }
     }
 
-    static Vector4 zero()    { return { 0.0f, 0.0f, 0.0f, 0.0f }; }
-    static Vector4 one()     { return { 1.0f, 1.0f, 1.0f, 1.0f }; }
+    static Vector4 zero() { return { 0.0f, 0.0f, 0.0f, 0.0f }; }
+    static Vector4 one()  { return { 1.0f, 1.0f, 1.0f, 1.0f }; }
 
 };
