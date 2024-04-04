@@ -19,7 +19,7 @@ target_include_directories(${MATH_LIB_NAME}
 
 target_compile_features(${MATH_LIB_NAME}
     INTERFACE
-        cxx_std_26
+        cxx_std_20
 )
 
 install(

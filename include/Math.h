@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include <Misc/MathHelper.h>
+#include <MathHelper.h>
 
-#include <Misc/Quaternion.h>
+#include <Quaternion.h>
 
 #include <Matrices/Matrix2x2.h>
 #include <Matrices/Matrix3x3.h>
