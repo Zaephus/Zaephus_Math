@@ -312,19 +312,35 @@ struct Matrix4x4 {
 
     static Matrix4x4 perspective(const float _fovY, const float _aspect, const float _near, const float _far) {
 
-        const float f = std::tan(0.5f * _fovY);
+//        const float f = std::tan(0.5f * _fovY);
+//
+//        const float a = _aspect / f;
+//        const float b = 1.0f / f;
+//
+//        const float c = _far / (_far - _near);
+//        const float d = -(_far * _near / (_far - _near));
+//
+//        return {
+//            a, 0.0f, 0.0f, 0.0f,
+//            0.0f, -b, 0.0f, 0.0f,
+//            0.0f, 0.0f, -c, -1.0f,
+//            0.0f, 0.0f, d, 0.0f
+//        };
 
-        const float a = _aspect / f;
-        const float b = 1.0f / f;
+        const float t = _near * tan(0.5f * _fovY);
+        const float r = _aspect * t;
 
-        const float c = _far / (_far - _near);
-        const float d = -(_far * _near / (_far - _near));
+        const float a = _near / r;
+        const float b = _near / t;
+
+        const float c = -(_far + _near) / (_far - _near);
+        const float d = -(2.0f * _far * _near) / (_far - _near);
 
         return {
             a, 0.0f, 0.0f, 0.0f,
-            0.0f, -b, 0.0f, 0.0f,
-            0.0f, 0.0f, -c, -1.0f,
-            0.0f, 0.0f, d, 0.0f
+            0.0f, b, 0.0f, 0.0f,
+            0.0f, 0.0f, c, d,
+            0.0f, 0.0f, -1.0f, 0.0f
         };
     }
 
@@ -360,31 +376,31 @@ struct Matrix4x4 {
     }
 
     Matrix4x4 operator*=(const Matrix4x4& _m) const {
-        return {
-            this->m00 * _m.m00 + this->m01 * _m.m10 + this->m02 * _m.m20 + this->m03 * _m.m30,
-            this->m00 * _m.m01 + this->m01 * _m.m11 + this->m02 * _m.m21 + this->m03 * _m.m31,
-            this->m00 * _m.m02 + this->m01 * _m.m12 + this->m02 * _m.m22 + this->m03 * _m.m32,
-            this->m00 * _m.m03 + this->m01 * _m.m13 + this->m02 * _m.m23 + this->m03 * _m.m33,
-
-            this->m10 * _m.m00 + this->m11 * _m.m10 + this->m12 * _m.m20 + this->m13 * _m.m30,
-            this->m10 * _m.m01 + this->m11 * _m.m11 + this->m12 * _m.m21 + this->m13 * _m.m31,
-            this->m10 * _m.m02 + this->m11 * _m.m12 + this->m12 * _m.m22 + this->m13 * _m.m32,
-            this->m10 * _m.m03 + this->m11 * _m.m13 + this->m12 * _m.m23 + this->m13 * _m.m33,
-
-            this->m20 * _m.m00 + this->m21 * _m.m10 + this->m22 * _m.m20 + this->m23 * _m.m30,
-            this->m20 * _m.m01 + this->m21 * _m.m11 + this->m22 * _m.m21 + this->m23 * _m.m31,
-            this->m20 * _m.m02 + this->m21 * _m.m12 + this->m22 * _m.m22 + this->m23 * _m.m32,
-            this->m20 * _m.m03 + this->m21 * _m.m13 + this->m22 * _m.m23 + this->m23 * _m.m33,
-
-            this->m30 * _m.m00 + this->m31 * _m.m10 + this->m32 * _m.m20 + this->m33 * _m.m30,
-            this->m30 * _m.m01 + this->m31 * _m.m11 + this->m32 * _m.m21 + this->m33 * _m.m31,
-            this->m30 * _m.m02 + this->m31 * _m.m12 + this->m32 * _m.m22 + this->m33 * _m.m32,
-            this->m30 * _m.m03 + this->m31 * _m.m13 + this->m32 * _m.m23 + this->m33 * _m.m33
-        };
+        return *this * _m;
     }
-    friend Matrix4x4 operator*(Matrix4x4 _lhs, const Matrix4x4& _rhs) {
-        _lhs *= _rhs;
-        return _lhs;
+
+    friend Matrix4x4 operator*(const Matrix4x4& _lhs, const Matrix4x4& _rhs) {
+        return {
+            _lhs.m00 * _rhs.m00 + _lhs.m01 * _rhs.m10 + _lhs.m02 * _rhs.m20 + _lhs.m03 * _rhs.m30,
+            _lhs.m00 * _rhs.m01 + _lhs.m01 * _rhs.m11 + _lhs.m02 * _rhs.m21 + _lhs.m03 * _rhs.m31,
+            _lhs.m00 * _rhs.m02 + _lhs.m01 * _rhs.m12 + _lhs.m02 * _rhs.m22 + _lhs.m03 * _rhs.m32,
+            _lhs.m00 * _rhs.m03 + _lhs.m01 * _rhs.m13 + _lhs.m02 * _rhs.m23 + _lhs.m03 * _rhs.m33,
+
+            _lhs.m10 * _rhs.m00 + _lhs.m11 * _rhs.m10 + _lhs.m12 * _rhs.m20 + _lhs.m13 * _rhs.m30,
+            _lhs.m10 * _rhs.m01 + _lhs.m11 * _rhs.m11 + _lhs.m12 * _rhs.m21 + _lhs.m13 * _rhs.m31,
+            _lhs.m10 * _rhs.m02 + _lhs.m11 * _rhs.m12 + _lhs.m12 * _rhs.m22 + _lhs.m13 * _rhs.m32,
+            _lhs.m10 * _rhs.m03 + _lhs.m11 * _rhs.m13 + _lhs.m12 * _rhs.m23 + _lhs.m13 * _rhs.m33,
+
+            _lhs.m20 * _rhs.m00 + _lhs.m21 * _rhs.m10 + _lhs.m22 * _rhs.m20 + _lhs.m23 * _rhs.m30,
+            _lhs.m20 * _rhs.m01 + _lhs.m21 * _rhs.m11 + _lhs.m22 * _rhs.m21 + _lhs.m23 * _rhs.m31,
+            _lhs.m20 * _rhs.m02 + _lhs.m21 * _rhs.m12 + _lhs.m22 * _rhs.m22 + _lhs.m23 * _rhs.m32,
+            _lhs.m20 * _rhs.m03 + _lhs.m21 * _rhs.m13 + _lhs.m22 * _rhs.m23 + _lhs.m23 * _rhs.m33,
+
+            _lhs.m30 * _rhs.m00 + _lhs.m31 * _rhs.m10 + _lhs.m32 * _rhs.m20 + _lhs.m33 * _rhs.m30,
+            _lhs.m30 * _rhs.m01 + _lhs.m31 * _rhs.m11 + _lhs.m32 * _rhs.m21 + _lhs.m33 * _rhs.m31,
+            _lhs.m30 * _rhs.m02 + _lhs.m31 * _rhs.m12 + _lhs.m32 * _rhs.m22 + _lhs.m33 * _rhs.m32,
+            _lhs.m30 * _rhs.m03 + _lhs.m31 * _rhs.m13 + _lhs.m32 * _rhs.m23 + _lhs.m33 * _rhs.m33
+        };
     }
 
     friend Vector4 operator*(const Matrix4x4& _m, const Vector4& _v) {
