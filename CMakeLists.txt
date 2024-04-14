@@ -5,17 +5,28 @@ project(Zaephus_Math
         LANGUAGES CXX
 )
 
+set(CMAKE_CXX_STANDARD 26)
 set(MATH_LIB_NAME "Zaephus_Math")
 
-add_library(${MATH_LIB_NAME} INTERFACE)
-
-include(GNUInstallDirs)
+add_library(${MATH_LIB_NAME} STATIC
+        include/Matrices/Matrix4x4.cpp
+        include/Matrices/Matrix4x4.h
+        include/Math.h
+        include/Quaternion.cpp
+        include/Matrices/Matrix3x3.cpp
+        include/Matrices/Matrix2x2.cpp
+        include/Vectors/Vector2.cpp
+        include/Vectors/Vector3.cpp
+        include/Vectors/Vector4.cpp
+)
 
 target_include_directories(${MATH_LIB_NAME}
-    INTERFACE
+    PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
+
+include(GNUInstallDirs)
 
 target_compile_features(${MATH_LIB_NAME}
     INTERFACE

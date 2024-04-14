@@ -1,143 +1,57 @@
 
 #pragma once
 
-#include <cmath>
-#include <format>
-#include <string>
-
 struct Vector2 {
 
-    float x;
-    float y;
+    float x = 0;
+    float y = 0;
 
-    Vector2() {
-        *this = zero();
-    }
-
+    Vector2();
     explicit Vector2(const float _x) : Vector2(_x, _x) {}
-    Vector2(const float _x, const float _y) {
-        x = _x;
-        y = _y;
-    }
+    Vector2(float _x, float _y);
+    Vector2(const Vector2& _v);
 
-    Vector2(const Vector2& _v) {
-        x = _v.x;
-        y = _v.y;
-    }
+    [[nodiscard]] std::string toString() const;
 
-    [[nodiscard]] float magnitude() const {
-        return std::sqrt(x*x + y*y);
-    }
+    [[nodiscard]] float magnitude() const;
+    [[nodiscard]] float squaredMagnitude() const;
 
-    [[nodiscard]] float squaredMagnitude() const {
-        return x*x + y*y;
-    }
+    [[nodiscard]] Vector2 normalized() const;
+    void normalize();
 
-    [[nodiscard]] Vector2 normalized() const {
-        Vector2 norm = Vector2(x, y);
-        norm.normalize();
-        return norm;
-    }
+    static float distance(const Vector2& _lhs, const Vector2& _rhs);
 
-    void normalize() {
-        *this /= magnitude();
-    }
+    static float dot(const Vector2& _lhs, const Vector2& _rhs);
+    static float cross(const Vector2& _lhs, const Vector2& _rhs);
 
-    static float distance(const Vector2& _lhs, const Vector2& _rhs) {
-        return std::sqrt((_rhs.x - _lhs.x) * (_rhs.x - _lhs.x) + (_rhs.y - _lhs.y) * (_rhs.y - _lhs.y));
-    }
+    static float angle(const Vector2& _from, const Vector2& _to);
 
-    static float dot(const Vector2& _lhs, const Vector2& _rhs) {
-        return _lhs.x * _rhs.x + _lhs.y * _rhs.y;
-    }
+    static Vector2 zero();
+    static Vector2 one();
+    static Vector2 right();
+    static Vector2 left();
+    static Vector2 up();
+    static Vector2 down();
 
-    static float cross(const Vector2& _lhs, const Vector2& _rhs) {
-        return _lhs.y * _rhs.x - _lhs.x * _rhs.y;
-    }
+    Vector2& operator+=(const Vector2& _v);
+    friend Vector2 operator+(const Vector2& _lhs, const Vector2& _rhs);
 
-    static float angle(const Vector2& _from, const Vector2& _to) {
-        const float delta = dot(_from, _to);
-        return std::acos(delta / (_from.magnitude() * _to.magnitude()));
-    }
+    Vector2& operator-=(const Vector2& _v);
+    friend Vector2 operator-(const Vector2& _lhs, const Vector2& _rhs);
+    Vector2 operator-();
 
-    [[nodiscard]] std::string toString() const {
-        return std::format("{}, {}", x, y);
-    }
+    Vector2& operator*=(float _s);
+    friend Vector2 operator*(const Vector2& _v, float _s);
+    friend Vector2 operator*(float _s, const Vector2& _v);
 
-    Vector2& operator+=(const Vector2& _v) {
-        this->x += _v.x;
-        this->y += _v.y;
-        return *this;
-    }
-    friend Vector2 operator+(Vector2 _lhs, const Vector2& _rhs) {
-        _lhs += _rhs;
-        return _lhs;
-    }
-
-    Vector2& operator-=(const Vector2& _v) {
-        this->x -= _v.x;
-        this->y -= _v.y;
-        return *this;
-    }
-    friend Vector2 operator-(Vector2 _lhs, const Vector2& _rhs) {
-        _lhs -= _rhs;
-        return _lhs;
-    }
-    Vector2 operator-() {
-        this->x = -this->x;
-        this->y = -this->y;
-        return *this;
-    }
-
-    Vector2& operator*=(const float _s) {
-        this->x *= _s;
-        this->y *= _s;
-        return *this;
-    }
-    friend Vector2 operator*(Vector2 _v, const float _s) {
-        _v *= _s;
-        return _v;
-    }
-    friend Vector2 operator*(const float _s, Vector2 _v) {
-        _v *= _s;
-        return _v;
-    }
-
-    Vector2& operator/=(const float _s) {
-        this->x /= _s;
-        this->y /= _s;
-        return *this;
-    }
-    friend Vector2 operator/(Vector2 _v, const float _s) {
-        _v /= _s;
-        return _v;
-    }
+    Vector2& operator/=(float _s);
+    friend Vector2 operator/(const Vector2& _v, float _s);
 
     Vector2& operator=(const Vector2& _v) = default;
 
-    friend bool operator==(const Vector2& _lhs, const Vector2& _rhs) {
-        return _lhs.x == _rhs.x && _lhs.y == _rhs.y;
-    }
-    friend bool operator!=(const Vector2& _lhs, const Vector2& _rhs) {
-        return !(_lhs == _rhs);
-    }
+    friend bool operator==(const Vector2& _lhs, const Vector2& _rhs);
+    friend bool operator!=(const Vector2& _lhs, const Vector2& _rhs);
 
-    float operator[](const size_t _i) const {
-        switch(_i) {
-            case 0:
-                return x;
-            case 1:
-                return y;
-            default:
-                throw std::out_of_range("Invalid index.");
-        }
-    }
-
-    static Vector2 zero()    { return { 0.0f,  0.0f }; }
-    static Vector2 one()     { return { 1.0f,  1.0f }; }
-    static Vector2 right()   { return { 1.0f,  0.0f }; }
-    static Vector2 left()    { return { -1.0f, 0.0f }; }
-    static Vector2 up()      { return { 0.0f,  1.0f }; }
-    static Vector2 down()    { return { 0.0f, -1.0f }; }
+    float operator[](size_t _i) const;
 
 };

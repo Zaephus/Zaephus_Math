@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <MathHelper.h>
+#include <cmath>
 
 #include <Quaternion.h>
 
@@ -10,18 +10,19 @@
 #include <Matrices/Matrix4x4.h>
 
 #include <Vectors/Vector2.h>
-#include <Vectors/Vector2Int.h>
 #include <Vectors/Vector3.h>
-#include <Vectors/Vector3Int.h>
 #include <Vectors/Vector4.h>
-#include <Vectors/Vector4Int.h>
 
-#include <cmath>
+struct Math {
 
-using std::sin;
-using std::cos;
-using std::tan;
-using std::asin;
-using std::acos;
-using std::atan;
-using std::atan2;
+    static inline constexpr double pi = 3.14159265358979323846;
+
+    static inline constexpr double e = 2.71828182845904523536;
+
+    static inline constexpr float epsilon = 1.175494351E-38;
+    static inline constexpr double doubleEpsilon = 2.2250738585072014E-308;
+
+    static inline constexpr double rad2deg = 180 / pi;
+    static inline constexpr double deg2rad = pi / 180;
+
+};
