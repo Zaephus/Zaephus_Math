@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <string>
+
 struct Vector3;
 struct Vector4;
 struct Quaternion;

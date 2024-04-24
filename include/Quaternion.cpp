@@ -70,11 +70,14 @@ Vector3 Quaternion::toEuler(const Quaternion& _q) {
 }
 
 Quaternion Quaternion::fromEuler(const float _xDeg, const float _yDeg, const float _zDeg) {
+    const float x = _xDeg * Math::deg2rad;
+    const float y = _yDeg * Math::deg2rad;
+    const float z = _zDeg * Math::deg2rad;
     return {
-        std::sin(_xDeg * 0.5f) * std::cos(_yDeg * 0.5f) * std::cos(_zDeg * 0.5f) - std::cos(_xDeg * 0.5f) * std::sin(_yDeg * 0.5f) * std::sin(_zDeg * 0.5f),
-        std::cos(_xDeg * 0.5f) * std::sin(_yDeg * 0.5f) * std::cos(_zDeg * 0.5f) - std::sin(_xDeg * 0.5f) * std::cos(_yDeg * 0.5f) * std::sin(_zDeg * 0.5f),
-        std::cos(_xDeg * 0.5f) * std::cos(_yDeg * 0.5f) * std::sin(_zDeg * 0.5f) - std::sin(_xDeg * 0.5f) * std::sin(_yDeg * 0.5f) * std::cos(_zDeg * 0.5f),
-        std::cos(_xDeg * 0.5f) * std::cos(_yDeg * 0.5f) * std::cos(_zDeg * 0.5f) - std::sin(_xDeg * 0.5f) * std::sin(_yDeg * 0.5f) * std::sin(_zDeg * 0.5f)
+        std::sin(x * 0.5f) * std::cos(y * 0.5f) * std::cos(z * 0.5f) - std::cos(x * 0.5f) * std::sin(y * 0.5f) * std::sin(z * 0.5f),
+        std::cos(x * 0.5f) * std::sin(y * 0.5f) * std::cos(z * 0.5f) - std::sin(x * 0.5f) * std::cos(y * 0.5f) * std::sin(z * 0.5f),
+        std::cos(x * 0.5f) * std::cos(y * 0.5f) * std::sin(z * 0.5f) - std::sin(x * 0.5f) * std::sin(y * 0.5f) * std::cos(z * 0.5f),
+        std::cos(x * 0.5f) * std::cos(y * 0.5f) * std::cos(z * 0.5f) - std::sin(x * 0.5f) * std::sin(y * 0.5f) * std::sin(z * 0.5f)
     };
 }
 
