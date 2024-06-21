@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 struct Vector3;
 
 struct Quaternion {
