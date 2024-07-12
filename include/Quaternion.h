@@ -24,6 +24,11 @@ struct Quaternion {
     void normalize();
     [[nodiscard]] Quaternion normalized() const;
 
+    void invert();
+    [[nodiscard]] Quaternion inverse() const;
+
+    [[nodiscard]] Quaternion conjugate() const;
+
     [[nodiscard]] Vector3 toEuler() const;
     static Vector3 toEuler(const Quaternion& _q);
 

@@ -44,6 +44,21 @@ void Quaternion::normalize() {
     return norm;
 }
 
+void Quaternion::invert() {
+    float mag = magnitude();
+    *this = conjugate() / (mag * mag);
+}
+
+[[nodiscard]] Quaternion Quaternion::inverse() const {
+    Quaternion inverse = Quaternion(x, y, z, w);
+    inverse.invert();
+    return inverse;
+}
+
+[[nodiscard]] Quaternion Quaternion::conjugate() const {
+    return { -x, -y, -z, w };
+}
+
 [[nodiscard]] Vector3 Quaternion::toEuler() const {
     return toEuler(*this);
 }
@@ -87,11 +102,11 @@ Quaternion Quaternion::fromEuler(const Vector3& _eulerDeg) {
 }
 
 Quaternion Quaternion::fromAxisAngle(const Vector3& _axis, const float _angleRad) {
-    const Vector3 axis = _axis.normalized();
+//    const Vector3 axis = _axis.normalized();
     return {
-        axis.x * std::sin(_angleRad * 0.5f),
-        axis.y * std::sin(_angleRad * 0.5f),
-        axis.z * std::sin(_angleRad * 0.5f),
+        _axis.x * std::sin(_angleRad * 0.5f),
+        _axis.y * std::sin(_angleRad * 0.5f),
+        _axis.z * std::sin(_angleRad * 0.5f),
         std::cos(_angleRad * 0.5f)
     };
 }
@@ -143,9 +158,9 @@ Quaternion Quaternion::operator*=(const Quaternion& _q) {
 }
 Quaternion operator*(const Quaternion& _lhs, const Quaternion& _rhs) {
     return {
-        _lhs.w * _rhs.x + _lhs.x * _rhs.w + _lhs.y * _rhs.z - _lhs.z * _rhs.y,
-        _lhs.w * _rhs.y + _lhs.y * _rhs.w + _lhs.z * _rhs.x - _lhs.x * _rhs.z,
-        _lhs.w * _rhs.z + _lhs.z * _rhs.w + _lhs.x * _rhs.y - _lhs.y * _rhs.x,
+        _lhs.w * _rhs.x + _lhs.x * _rhs.w - _lhs.y * _rhs.z + _lhs.z * _rhs.y,
+        _lhs.w * _rhs.y + _lhs.x * _rhs.z + _lhs.y * _rhs.w - _lhs.z * _rhs.x,
+        _lhs.w * _rhs.z - _lhs.x * _rhs.y + _lhs.y * _rhs.x + _lhs.z * _rhs.w,
         _lhs.w * _rhs.w - _lhs.x * _rhs.x - _lhs.y * _rhs.y - _lhs.z * _rhs.z
     };
 }
