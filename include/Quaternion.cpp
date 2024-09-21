@@ -97,8 +97,7 @@ Quaternion Quaternion::fromEuler(const float _xDeg, const float _yDeg, const flo
 }
 
 Quaternion Quaternion::fromEuler(const Vector3& _eulerDeg) {
-    const Vector3 euler = _eulerDeg * Math::deg2rad;
-    return fromEuler(euler.x, euler.y, euler.z);
+    return fromEuler(_eulerDeg.x, _eulerDeg.y, _eulerDeg.z);
 }
 
 Quaternion Quaternion::fromAxisAngle(const Vector3& _axis, const float _angleRad) {

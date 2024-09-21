@@ -25,7 +25,6 @@ struct Math {
     static inline constexpr float epsilon = 1.175494351E-38;
     static inline constexpr float doubleEpsilon = 2.2250738585072014E-308;
 
-    static inline constexpr float rad2deg = 180 / pi;
-    static inline constexpr float deg2rad = pi / 180;
-
+    static inline constexpr float rad2deg = 180.0f / pi;
+    static inline constexpr float deg2rad = pi / 180.0f;
 };
