@@ -2,7 +2,7 @@
 #include <iostream>
 #include <format>
 
-#include <Math.h>
+#include "../ZMath.h"
 
 Matrix3x3::Matrix3x3() {
     *this = identity();

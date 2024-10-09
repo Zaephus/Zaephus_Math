@@ -3,7 +3,7 @@
 #include <format>
 #include <stdexcept>
 
-#include <Math.h>
+#include "ZMath.h"
 
 Quaternion::Quaternion() {
     *this = identity();
@@ -70,10 +70,10 @@ Vector3 Quaternion::toEuler(const Quaternion& _q) {
     const float y = std::asin(2 * (_q.w * _q.y - _q.x * _q.z));
     float z;
 
-    if(y == Math::pi * 0.5f) {
+    if(y == ZMath::pi * 0.5f) {
         z = -2 * std::atan2(_q.x, _q.w);
     }
-    else if(y == -Math::pi * 0.5f) {
+    else if(y == -ZMath::pi * 0.5f) {
         z = 2 * std::atan2(_q.x, _q.w);
     }
     else {
@@ -81,14 +81,14 @@ Vector3 Quaternion::toEuler(const Quaternion& _q) {
         z = std::atan2(2 * (_q.w * _q.z + _q.x * _q.y), _q.w * _q.w + _q.x * _q.x - _q.y * _q.y - _q.z * _q.z);
     }
 
-    return Vector3(x, y, z) * Math::rad2deg;
+    return Vector3(x, y, z) * ZMath::rad2deg;
 
 }
 
 Quaternion Quaternion::fromEuler(const float _xDeg, const float _yDeg, const float _zDeg) {
-    const float x = _xDeg * Math::deg2rad;
-    const float y = _yDeg * Math::deg2rad;
-    const float z = _zDeg * Math::deg2rad;
+    const float x = _xDeg * ZMath::deg2rad;
+    const float y = _yDeg * ZMath::deg2rad;
+    const float z = _zDeg * ZMath::deg2rad;
     return {
         std::sin(x * 0.5f) * std::cos(y * 0.5f) * std::cos(z * 0.5f) - std::cos(x * 0.5f) * std::sin(y * 0.5f) * std::sin(z * 0.5f),
         std::cos(x * 0.5f) * std::sin(y * 0.5f) * std::cos(z * 0.5f) - std::sin(x * 0.5f) * std::cos(y * 0.5f) * std::sin(z * 0.5f),

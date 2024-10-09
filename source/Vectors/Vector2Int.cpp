@@ -2,7 +2,7 @@
 #include <iostream>
 #include <format>
 
-#include <Math.h>
+#include "../ZMath.h"
 
 Vector2Int::Vector2Int() {
     *this = zero();
