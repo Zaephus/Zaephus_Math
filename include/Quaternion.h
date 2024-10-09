@@ -4,6 +4,7 @@
 #include <string>
 
 struct Vector3;
+struct Vector4;
 
 struct Quaternion {
 
@@ -53,6 +54,7 @@ struct Quaternion {
     Quaternion operator*=(const Quaternion& _q);
     friend Quaternion operator*(const Quaternion& _lhs, const Quaternion& _rhs);
 
+    friend Vector4 operator*(const Quaternion& _q, const Vector4& _v);
     friend Vector3 operator*(const Quaternion& _q, const Vector3& _v);
 
     Quaternion& operator*=(float _s);

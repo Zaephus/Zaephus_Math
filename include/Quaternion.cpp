@@ -33,6 +33,7 @@ void Quaternion::normalize() {
     const float mag = magnitude();
     if(mag == 0) {
         *this = identity(); // TODO: Why set this to identity here?
+        std::cout << "Magnitude of quaternion was zero!" << std::endl;
         return;
     }
     *this /= mag;
@@ -101,11 +102,12 @@ Quaternion Quaternion::fromEuler(const Vector3& _eulerDeg) {
 }
 
 Quaternion Quaternion::fromAxisAngle(const Vector3& _axis, const float _angleRad) {
-//    const Vector3 axis = _axis.normalized();
+    const Vector3 axis = _axis.normalized();
+    float axisComponent = std::sin(_angleRad * 0.5f);
     return {
-        _axis.x * std::sin(_angleRad * 0.5f),
-        _axis.y * std::sin(_angleRad * 0.5f),
-        _axis.z * std::sin(_angleRad * 0.5f),
+        axis.x * axisComponent,
+        axis.y * axisComponent,
+        axis.z * axisComponent,
         std::cos(_angleRad * 0.5f)
     };
 }
@@ -155,12 +157,24 @@ Quaternion Quaternion::operator*=(const Quaternion& _q) {
     *this = *this * _q;
     return *this;
 }
-Quaternion operator*(const Quaternion& _lhs, const Quaternion& _rhs) {
+Quaternion operator*(const Quaternion& a, const Quaternion& b) {
+//    float w1, w2;
+//    float x1, x2;
+//    float y1, y2;
+//    float z1, z2;
+//    float x, y, z, w;
+//
+//    z = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
+//    x = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2;
+//    y = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2;
+//    w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
+//
+//    float test = w * x * y * z;
     return {
-        _lhs.w * _rhs.x + _lhs.x * _rhs.w - _lhs.y * _rhs.z + _lhs.z * _rhs.y,
-        _lhs.w * _rhs.y + _lhs.x * _rhs.z + _lhs.y * _rhs.w - _lhs.z * _rhs.x,
-        _lhs.w * _rhs.z - _lhs.x * _rhs.y + _lhs.y * _rhs.x + _lhs.z * _rhs.w,
-        _lhs.w * _rhs.w - _lhs.x * _rhs.x - _lhs.y * _rhs.y - _lhs.z * _rhs.z
+        a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
+        a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x,
+        a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w,
+        a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z
     };
 }
 

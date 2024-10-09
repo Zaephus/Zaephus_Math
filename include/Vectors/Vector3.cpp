@@ -35,7 +35,10 @@ Vector3::Vector3(const Vector3& _v) {
     return norm;
 }
 void Vector3::normalize() {
-    *this /= magnitude();
+    float mag = magnitude();
+    if(mag == 0.0f) { return; }
+
+    *this /= mag;
 }
 
 float Vector3::distance(const Vector3& _lhs, const Vector3& _rhs) {
