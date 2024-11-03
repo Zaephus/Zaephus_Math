@@ -6,6 +6,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 add_executable(Test
     main.cpp
     Vectors/Vec3Test.h
+    Time.h
 )
 
 target_link_libraries(Test PRIVATE ${MATH_LIB_NAME})

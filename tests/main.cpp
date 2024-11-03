@@ -4,5 +4,5 @@
 #include "Vectors/Vec3Test.h"
 
 int main() {
-    return Vec3Test::runTests();
+    return Vec3Test();
 }
