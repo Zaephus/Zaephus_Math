@@ -7,6 +7,8 @@ add_executable(Test
     main.cpp
     Vectors/Vec3Test.h
     Time.h
+    TestHelper.h
+    QuaternionTest.h
 )
 
 target_link_libraries(Test PRIVATE ${MATH_LIB_NAME})

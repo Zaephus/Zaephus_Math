@@ -157,7 +157,7 @@ Quaternion Quaternion::operator*=(const Quaternion& _q) {
     *this = *this * _q;
     return *this;
 }
-Quaternion operator*(const Quaternion& a, const Quaternion& b) {
+Quaternion operator*(const Quaternion& _a, const Quaternion& _b) {
 //    float w1, w2;
 //    float x1, x2;
 //    float y1, y2;
@@ -171,10 +171,10 @@ Quaternion operator*(const Quaternion& a, const Quaternion& b) {
 //
 //    float test = w * x * y * z;
     return {
-        a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
-        a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x,
-        a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w,
-        a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z
+        _a.w * _b.x + _a.x * _b.w + _a.y * _b.z - _a.z * _b.y,
+        _a.w * _b.y - _a.x * _b.z + _a.y * _b.w + _a.z * _b.x,
+        _a.w * _b.z + _a.x * _b.y - _a.y * _b.x + _a.z * _b.w,
+        _a.w * _b.w - _a.x * _b.x - _a.y * _b.y - _a.z * _b.z
     };
 }
 
@@ -220,7 +220,7 @@ Quaternion operator/(const Quaternion& _q, const float _s) {
 }
 
 bool operator==(const Quaternion& _lhs, const Quaternion& _rhs) {
-    return _lhs.x == _rhs.x && _lhs.y == _rhs.y && _lhs.z == _rhs.z && _lhs.w == _rhs.w;
+    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z) && ZMath::isRelativelyEqual(_lhs.w, _rhs.w);
 }
 bool operator!=(const Quaternion& _lhs, const Quaternion& _rhs) {
     return !(_lhs == _rhs);

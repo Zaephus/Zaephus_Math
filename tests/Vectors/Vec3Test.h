@@ -1,22 +1,14 @@
 
 #pragma once
 
-#include <chrono>
 #include <iostream>
-#include <string>
-#include <format>
 #include <vector>
-#include <cmath>
-#include <limits>
 
 #include "../Time.h"
+#include "../TestHelper.h"
 
 #include <source/ZMath.h>
 #include <source/Vectors/Vector3.h>
-
-using namespace std::chrono;
-
-typedef std::chrono::high_resolution_clock Clock;
 
 std::vector<Vector3> testVectors = {
     { 0.0f,  0.0f,  0.0f  },
@@ -32,7 +24,7 @@ std::vector<Vector3> testVectors = {
 };
 
 void magnitudeTest() {
-    std::cout << "Starting Magnitude test!" << std::endl;
+    std::cout << "Starting magnitude test!" << std::endl;
 
     std::vector<float> expectedAnswers = {
         0.000000000f,
@@ -48,23 +40,23 @@ void magnitudeTest() {
     };
 
     for(int i = 0; i < testVectors.size(); i++) {
-        auto startTime = Clock::now();
+        auto startTime = Time::microseconds();
         const float mag = testVectors[i].magnitude();
-        auto elapsedTime = Clock::now() - startTime;
+        auto elapsedTime = Time::microseconds() - startTime;
 
         if(!ZMath::isRelativelyEqual(mag, expectedAnswers[i])) {
-            std::cout << std::format("Failed test with vector {{{}}}! Expected result {}, got {}", testVectors[i].toString(), expectedAnswers[i], mag) << std::endl;
+            printTestFailed(testVectors[i], expectedAnswers[i], mag);
             continue;
         }
 
-        std::cout << std::format("Success! Time elapsed: {}", elapsedTime) << std::endl;
+        printTestSuccess(elapsedTime);
     }
 
     std::cout << std::endl;
 }
 
 void squaredMagnitudeTest() {
-    std::cout << "Starting SquaredMagnitude test!" << std::endl;
+    std::cout << "Starting squared magnitude test!" << std::endl;
 
     std::vector<float> expectedAnswers = {
         0.000000000f,
@@ -80,73 +72,150 @@ void squaredMagnitudeTest() {
     };
 
     for(int i = 0; i < testVectors.size(); i++) {
-        auto startTime = Clock::now();
+        auto startTime = Time::microseconds();
         const float mag = testVectors[i].squaredMagnitude();
-        auto elapsedTime = Clock::now() - startTime;
+        auto elapsedTime = Time::microseconds() - startTime;
 
         if(!ZMath::isRelativelyEqual(mag, expectedAnswers[i])) {
-            std::cout << std::format("Failed test with vector {{{}}}! Expected result {}, got {}", testVectors[i].toString(), expectedAnswers[i], mag) << std::endl;
+            printTestFailed(testVectors[i], expectedAnswers[i], mag);
             continue;
         }
 
-        std::cout << std::format("Success! Time elapsed: {}", elapsedTime) << std::endl;
+        printTestSuccess(elapsedTime);
     }
 
     std::cout << std::endl;
 }
 
-std::string normalizedTest(const Vector3& _v, const Vector3& _expectedResult) {
-    return "Success";
+void normalizedTest() {
+    std::cout << "Starting normalized test!" << std::endl;
+
+    std::vector<Vector3> expectedAnswers = {
+        { 0.0f,         0.0f,         0.0f         },
+        { 0.8017837257, 0.5345224838, 0.2672612419 },
+        { 0.2958822794, 0.9518844384, 0.0798103517 },
+        { 0.514675438,  0.8524311942, 0.0920339759 },
+        { 0.9272970859, 0.3488955286, 0.1356171988 },
+        { 0.6309431405, 0.6777394348, 0.3775976851 },
+        { 0.5278015309, 0.8448876714, 0.0871227095 },
+        { 0.7195210148, 0.6944042648, 0.0096034632 },
+        { 0.8414959196, 0.5237435541, 0.1325794353 },
+        { 0.8207465943, 0.5531607184, 0.1427874212 }
+    };
+
+    for(int i = 0; i < testVectors.size(); i++) {
+        auto startTime = Time::microseconds();
+        const Vector3 norm = testVectors[i].normalized();
+        auto elapsedTime = Time::microseconds() - startTime;
+
+        if(norm != expectedAnswers[i]) {
+            printTestFailed(testVectors[i], expectedAnswers[i], norm);
+            continue;
+        }
+
+        printTestSuccess(elapsedTime);
+    }
+
+    std::cout << std::endl;
 }
 
-std::string distanceTest(const Vector3& _v, const float& _expectedResult) {
-    return "Success";
+void distanceTest() {
+    std::cout << "Starting distance test!" << std::endl;
+
+    for(int i = 0; i < testVectors.size(); i++) {
+        int j = testVectors.size() - 1 - i;
+
+        auto startTime = Time::microseconds();
+        const float dist = Vector3::distance(testVectors[i], testVectors[j]);
+        auto elapsedTime = Time::microseconds() - startTime;
+    }
+
+    std::cout << std::endl;
 }
 
-std::string dotProductTest(const Vector3& _a, const Vector3& _b, const float& _expectedResult) {
-    return "Success";
+void dotProductTest() {
+    std::cout << "Starting dot product test!" << std::endl;
+
+    std::cout << std::endl;
 }
-std::string crossProductTest(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void crossProductTest() {
+    std::cout << "Starting cross product test!" << std::endl;
+
+    std::cout << std::endl;
 }
 
-std::string angleTest(const Vector3& _a, const Vector3& _b, const float& _expectedResult) {
-    return "Success";
+void angleTest() {
+    std::cout << "Starting angle test!" << std::endl;
+
+    std::cout << std::endl;
 }
 
-std::string additionTestCompound(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void additionTestCompound() {
+    std::cout << "Starting compound addition test!" << std::endl;
+
+    std::cout << std::endl;
 }
-std::string additionTest(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void additionTest() {
+    std::cout << "Starting addition test!" << std::endl;
+
+    std::cout << std::endl;
 }
 
-std::string subtractionTestCompound(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void subtractionTestCompound() {
+    std::cout << "Starting compound subtraction test!" << std::endl;
+
+    std::cout << std::endl;
 }
-std::string subtractionTest(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void subtractionTest() {
+    std::cout << "Starting subtraction test!" << std::endl;
+
+    std::cout << std::endl;
 }
-std::string negationTest(const Vector3& _v, const Vector3& _expectedResult) {
-    return "Success";
+void negationTest() {
+    std::cout << "Starting negation test!" << std::endl;
+
+    std::cout << std::endl;
 }
 
-std::string multiplicationTestCompound(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void multiplicationTestCompound() {
+    std::cout << "Starting compound multiplication test!" << std::endl;
+
+    std::cout << std::endl;
 }
-std::string multiplicationTest(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void multiplicationTest() {
+    std::cout << "Starting multiplication test!" << std::endl;
+
+    std::cout << std::endl;
 }
 
-std::string divisionTestCompound(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void divisionTestCompound() {
+    std::cout << "Starting compound division test!" << std::endl;
+
+    std::cout << std::endl;
 }
-std::string divisionTest(const Vector3& _a, const Vector3& _b, const Vector3& _expectedResult) {
-    return "Success";
+void divisionTest() {
+    std::cout << "Starting division test!" << std::endl;
+
+    std::cout << std::endl;
 }
 
 int Vec3Test() {
     magnitudeTest();
     squaredMagnitudeTest();
+    normalizedTest();
+    distanceTest();
+    dotProductTest();
+    crossProductTest();
+    angleTest();
+    additionTestCompound();
+    additionTest();
+    subtractionTestCompound();
+    subtractionTest();
+    negationTest();
+    multiplicationTestCompound();
+    multiplicationTest();
+    divisionTestCompound();
+    divisionTest();
+
     return 0;
 }

@@ -116,7 +116,7 @@ Vector2Int operator/(const Vector2Int& _v, const int _s) {
 }
 
 bool operator==(const Vector2Int& _lhs, const Vector2Int& _rhs) {
-    return _lhs.x == _rhs.x && _lhs.y == _rhs.y;
+    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y);
 }
 bool operator!=(const Vector2Int& _lhs, const Vector2Int& _rhs) {
     return !(_lhs == _rhs);

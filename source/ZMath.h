@@ -20,23 +20,24 @@ class ZMath {
 
     public:
 
-        static inline constexpr float pi = 3.14159265358979323846;
+        static constexpr float pi = 3.14159265358979323846;
 
-        static inline constexpr float e = 2.71828182845904523536;
+        static constexpr float e = 2.71828182845904523536;
 
-        static inline constexpr float epsilon = 1.0E-6;
-        static inline constexpr double doubleEpsilon = 2.2250738585072014E-308;
+        static constexpr float epsilon = 1.0E-6;
+        static constexpr double doubleEpsilon = 2.2250738585072014E-308;
 
-        static inline constexpr float rad2deg = 180.0f / pi;
-        static inline constexpr float deg2rad = pi / 180.0f;
+        static constexpr float rad2deg = 180.0f / pi;
+        static constexpr float deg2rad = pi / 180.0f;
 
-        static bool isRelativelyEqual(float _a, float _b, float _epsilon = epsilon) {
+        template <typename T>
+        static bool isRelativelyEqual(T _a, T _b, float _epsilon = epsilon) {
             const float diff = std::abs(_a - _b);
 
             _a = std::abs(_a);
             _b = std::abs(_b);
 
-            float largest = _b > _a ? _b : _a;
+            T largest = _b > _a ? _b : _a;
 
             return diff <= largest * _epsilon;
         }

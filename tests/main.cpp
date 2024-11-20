@@ -1,8 +1,9 @@
 
 #include <iostream>
 
-#include "Vectors/Vec3Test.h"
+// #include "Vectors/Vec3Test.h"
+#include "QuaternionTest.h"
 
 int main() {
-    return Vec3Test();
+    return QuaternionTest();
 }

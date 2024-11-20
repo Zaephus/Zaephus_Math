@@ -72,3 +72,14 @@ struct Quaternion {
     float operator[](size_t _i) const;
 
 };
+
+template<>
+struct std::formatter<Quaternion> {
+    constexpr auto parse(std::format_parse_context& _ctx) {
+        return _ctx.begin();
+    }
+
+    auto format(const Quaternion& _v, std::format_context& _ctx) const {
+        return std::format_to(_ctx.out(), "{}", _v.toString());
+    }
+};

@@ -128,7 +128,7 @@ Vector4Int operator/(const Vector4Int& _v, const int _s) {
 }
 
 bool operator==(const Vector4Int& _lhs, const Vector4Int& _rhs) {
-    return _lhs.x == _rhs.x && _lhs.y == _rhs.y && _lhs.z == _rhs.z && _lhs.w == _rhs.w;
+    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z) && ZMath::isRelativelyEqual(_lhs.w, _rhs.w);
 }
 bool operator!=(const Vector4Int& _lhs, const Vector4Int& _rhs) {
     return !(_lhs == _rhs);

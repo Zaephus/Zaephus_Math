@@ -70,3 +70,14 @@ struct Matrix2x2 {
     Vector2 operator[](size_t _i) const;
 
 };
+
+template<>
+struct std::formatter<Matrix2x2> {
+    constexpr auto parse(std::format_parse_context& _ctx) {
+        return _ctx.begin();
+    }
+
+    auto format(const Matrix2x2& _v, std::format_context& _ctx) const {
+        return std::format_to(_ctx.out(), "{}", _v.toString());
+    }
+};

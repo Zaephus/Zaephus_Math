@@ -305,55 +305,6 @@ Matrix4x4 Matrix4x4::rotateMatrix(const Quaternion& _q) {
     };
 }
 
-Matrix4x4 Matrix4x4::lookAt(const Vector3& _pos, const Vector3& _up, const Vector3& _center) {
-    const Vector3 f = (_center - _pos).normalized();
-    const Vector3 r = Vector3::cross(f, _up).normalized();
-    const Vector3 u = Vector3::cross(r, f);
-
-    const Matrix4x4 d = {
-        r.x, r.y, r.z, 0.0f,
-        u.x, u.y, u.z, 0.0f,
-        -f.x, -f.y, -f.z, 0.0f,  // TODO: -forward is temporary.
-        _pos.x, _pos.y, _pos.z, 1.0f
-    };
-
-    return d.inverse();
-}
-
-Matrix4x4 Matrix4x4::perspective(const float _fovY, const float _aspect, const float _near, const float _far) {
-
-//        const float f = std::tan(0.5f * _fovY);
-//
-//        const float a = _aspect / f;
-//        const float b = 1.0f / f;
-//
-//        const float c = _far / (_far - _near);
-//        const float d = -(_far * _near / (_far - _near));
-//
-//        return {
-//            a, 0.0f, 0.0f, 0.0f,
-//            0.0f, -b, 0.0f, 0.0f,
-//            0.0f, 0.0f, -c, -1.0f,
-//            0.0f, 0.0f, d, 0.0f
-//        };
-
-    const float t = _near * std::tan(0.5f * _fovY);
-    const float r = _aspect * t;
-
-    const float a = _near / r;
-    const float b = _near / t;
-
-    const float c = -(_far + _near) / (_far - _near);
-    const float d = -(2.0f * _far * _near) / (_far - _near);
-
-    return {
-        a, 0.0f, 0.0f, 0.0f,
-        0.0f, b, 0.0f, 0.0f,
-        0.0f, 0.0f, c, d,
-        0.0f, 0.0f, -1.0f, 0.0f
-    };
-}
-
 Matrix4x4 Matrix4x4::zero() {
     return {
         0, 0, 0, 0,
@@ -486,7 +437,7 @@ Matrix4x4 operator/(const Matrix4x4& _m, const float _s) {
 bool operator==(const Matrix4x4& _lhs, const Matrix4x4& _rhs) {
     for(size_t x = 0; x < 4; x++) {
         for(size_t y = 0; y < 4; y++) {
-            if(_lhs[x][y] != _rhs[x][y]) {
+            if(ZMath::isRelativelyEqual(_lhs[x][y], _rhs[x][y])) {
                 return false;
             }
         }

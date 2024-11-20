@@ -127,7 +127,7 @@ Vector3 operator/(const Vector3& _v, const float _s) {
 }
 
 bool operator==(const Vector3& _lhs, const Vector3& _rhs) {
-    return _lhs.x == _rhs.x && _lhs.y == _rhs.y && _lhs.z == _rhs.z;
+    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z);
 }
 bool operator!=(const Vector3& _lhs, const Vector3& _rhs) {
     return !(_lhs == _rhs);

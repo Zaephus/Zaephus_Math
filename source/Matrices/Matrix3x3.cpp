@@ -278,7 +278,7 @@ Matrix3x3 operator/(const Matrix3x3& _m, const float _s) {
 bool operator==(const Matrix3x3& _lhs, const Matrix3x3& _rhs) {
     for(size_t x = 0; x < 3; x++) {
         for(size_t y = 0; y < 3; y++) {
-            if(_lhs[x][y] != _rhs[x][y]) {
+            if(ZMath::isRelativelyEqual(_lhs[x][y], _rhs[x][y])) {
                 return false;
             }
         }

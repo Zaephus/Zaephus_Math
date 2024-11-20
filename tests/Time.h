@@ -12,9 +12,9 @@ class Time {
             return std::chrono::duration_cast<std::chrono::milliseconds>(tClock::now().time_since_epoch()).count();
         }
         static long long int microseconds() {
-            return std::chrono::duration_cast<std::chrono::milliseconds>(tClock::now().time_since_epoch()).count();
+            return std::chrono::duration_cast<std::chrono::microseconds>(tClock::now().time_since_epoch()).count();
         }
         static long long int nanoseconds() {
-            return std::chrono::duration_cast<std::chrono::milliseconds>(tClock::now().time_since_epoch()).count();
+            return std::chrono::duration_cast<std::chrono::nanoseconds>(tClock::now().time_since_epoch()).count();
         }
 };
