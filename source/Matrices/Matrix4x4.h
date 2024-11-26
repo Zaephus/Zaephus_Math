@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <string>
+#include <format>
 
 struct Vector3;
 struct Vector4;

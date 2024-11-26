@@ -1,6 +1,10 @@
 
 #pragma once
 
+#include <cstddef>
+#include <string>
+#include <format>
+
 struct Vector3Int;
 
 struct Vector4Int {

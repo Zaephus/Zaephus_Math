@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <cstddef>
+#include <string>
+#include <format>
 struct Vector3;
 
 struct Matrix3x3 {
