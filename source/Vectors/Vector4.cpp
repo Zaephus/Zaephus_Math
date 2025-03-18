@@ -49,7 +49,10 @@ Vector4::Vector4(const Vector3& _v, const float _w) {
     return norm;
 }
 void Vector4::normalize() {
-    *this /= magnitude();
+    const float mag = magnitude();
+    if(mag == 0.0f) { return; }
+
+    *this /= mag;
 }
 
 float Vector4::distance(const Vector4& _lhs, const Vector4& _rhs) {

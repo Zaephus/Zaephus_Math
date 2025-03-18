@@ -36,7 +36,7 @@ Vector3::Vector3(const Vector3& _v) {
     return norm;
 }
 void Vector3::normalize() {
-    float mag = magnitude();
+    const float mag = magnitude();
     if(mag == 0.0f) { return; }
 
     *this /= mag;
