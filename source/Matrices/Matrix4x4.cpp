@@ -437,7 +437,7 @@ Matrix4x4 operator/(const Matrix4x4& _m, const float _s) {
 bool operator==(const Matrix4x4& _lhs, const Matrix4x4& _rhs) {
     for(size_t x = 0; x < 4; x++) {
         for(size_t y = 0; y < 4; y++) {
-            if(ZMath::isRelativelyEqual(_lhs[x][y], _rhs[x][y])) {
+            if(!ZMath::isRelativelyEqual(_lhs[x][y], _rhs[x][y])) {
                 return false;
             }
         }
