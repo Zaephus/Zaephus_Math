@@ -66,7 +66,7 @@ Vector3 Vector3::zero()    { return { 0.0f,  0.0f,  0.0f  }; }
 Vector3 Vector3::one()     { return { 1.0f,  1.0f,  1.0f  }; }
 Vector3 Vector3::right()   { return { 1.0f,  0.0f,  0.0f  }; }
 Vector3 Vector3::left()    { return { -1.0f, 0.0f,  0.0f  }; }
-Vector3 Vector3::up()      { return { 0.0f,  1.0f,  0.0f  }; }
+Vector3 Vector3::upVector()      { return { 0.0f,  1.0f,  0.0f  }; }
 Vector3 Vector3::down()    { return { 0.0f,  -1.0f, 0.0f  }; }
 Vector3 Vector3::forward() { return { 0.0f,  0.0f,  1.0f  }; }
 Vector3 Vector3::back()    { return { 0.0f,  0.0f,  -1.0f }; }

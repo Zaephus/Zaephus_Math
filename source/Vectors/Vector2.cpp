@@ -1,11 +1,19 @@
 
-#include <iostream>
+#include "Vector2.h"
+
 #include <format>
 
 #include "../ZMath.h"
 
+Vector2 Vector2::zero  = { 0.0f,  0.0f };
+Vector2 Vector2::one   = { 1.0f,  1.0f };
+Vector2 Vector2::right = { 1.0f,  0.0f };
+Vector2 Vector2::left  = { -1.0f, 0.0f };
+Vector2 Vector2::up    = { 0.0f,  1.0f };
+Vector2 Vector2::down  = { 0.0f, -1.0f };
+
 Vector2::Vector2() {
-    *this = zero();
+    *this = zero;
 }
 
 Vector2::Vector2(const float _x, const float _y) {
@@ -60,69 +68,57 @@ float Vector2::angle(const Vector2& _from, const Vector2& _to) {
     return std::acos(delta / (_from.magnitude() * _to.magnitude()));
 }
 
-Vector2 Vector2::zero()  { return { 0.0f,  0.0f }; }
-Vector2 Vector2::one()   { return { 1.0f,  1.0f }; }
-Vector2 Vector2::right() { return { 1.0f,  0.0f }; }
-Vector2 Vector2::left()  { return { -1.0f, 0.0f }; }
-Vector2 Vector2::up()    { return { 0.0f,  1.0f }; }
-Vector2 Vector2::down()  { return { 0.0f, -1.0f }; }
-
-Vector2& Vector2::operator+=(const Vector2& _v) {
+void Vector2::operator+=(const Vector2& _v) {
     *this = *this + _v;
-    return *this;
 }
-Vector2 operator+(const Vector2& _lhs, const Vector2& _rhs) {
+Vector2 Vector2::operator+(const Vector2& _v) const {
     return {
-        _lhs.x + _rhs.x,
-        _lhs.y + _rhs.y
+        x + _v.x,
+        y + _v.y
     };
 }
 
-Vector2& Vector2::operator-=(const Vector2& _v) {
+void Vector2::operator-=(const Vector2& _v) {
     *this = *this - _v;
-    return *this;
 }
-Vector2 operator-(const Vector2& _lhs, const Vector2& _rhs) {
+Vector2 Vector2::operator-(const Vector2& _v) const {
     return {
-        _lhs.x - _rhs.x,
-        _lhs.y - _rhs.y
+        x - _v.x,
+        y - _v.y
     };
 }
-Vector2 Vector2::operator-() {
-    *this = -1 * *this;
-    return *this;
+Vector2 Vector2::operator-() const {
+    return {
+        -x,
+        -y
+    };
 }
 
-Vector2& Vector2::operator*=(const float _s) {
+void Vector2::operator*=(const float _s) {
     *this = *this * _s;
-    return *this;
 }
-Vector2 operator*(const Vector2& _v, const float _s) {
+Vector2 Vector2::operator*(const float _s) const {
     return {
-        _v.x * _s,
-        _v.y * _s
+        x * _s,
+        y * _s
     };
 }
-Vector2 operator*(const float _s, const Vector2& _v) {
-    return _v * _s;
-}
 
-Vector2& Vector2::operator/=(const float _s) {
+void Vector2::operator/=(const float _s) {
     *this = *this / _s;
-    return *this;
 }
-Vector2 operator/(const Vector2& _v, const float _s) {
+Vector2 Vector2::operator/(const float _s) const {
     return {
-        _v.x / _s,
-        _v.y / _s
+        x / _s,
+        y / _s
     };
 }
 
-bool operator==(const Vector2& _lhs, const Vector2& _rhs) {
-    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y);
+bool Vector2::operator==(const Vector2& _v) const {
+    return ZMath::isRelativelyEqual(x, _v.x) && ZMath::isRelativelyEqual(y, _v.y);
 }
-bool operator!=(const Vector2& _lhs, const Vector2& _rhs) {
-    return !(_lhs == _rhs);
+bool Vector2::operator!=(const Vector2& _v) const {
+    return !(*this == _v);
 }
 
 float Vector2::operator[](const size_t _i) const {

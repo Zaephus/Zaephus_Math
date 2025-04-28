@@ -63,7 +63,7 @@ Vector3Int Vector3Int::zero()    { return { 0,  0,  0  }; }
 Vector3Int Vector3Int::one()     { return { 1,  1,  1  }; }
 Vector3Int Vector3Int::right()   { return { 1,  0,  0  }; }
 Vector3Int Vector3Int::left()    { return { -1, 0,  0  }; }
-Vector3Int Vector3Int::up()      { return { 0,  1,  0  }; }
+Vector3Int Vector3Int::upVector()      { return { 0,  1,  0  }; }
 Vector3Int Vector3Int::down()    { return { 0,  -1, 0  }; }
 Vector3Int Vector3Int::forward() { return { 0,  0,  1  }; }
 Vector3Int Vector3Int::back()    { return { 0,  0,  -1 }; }

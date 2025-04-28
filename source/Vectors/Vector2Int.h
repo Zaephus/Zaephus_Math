@@ -1,14 +1,19 @@
 
 #pragma once
 
-#include <cstddef>
-#include <string>
-#include <format>
+#include <iosfwd>
 
 struct Vector2Int {
 
     int x = 0;
     int y = 0;
+
+    static Vector2Int zero;
+    static Vector2Int one;
+    static Vector2Int right;
+    static Vector2Int left;
+    static Vector2Int up;
+    static Vector2Int down;
 
     Vector2Int();
     explicit Vector2Int(const int _x) : Vector2Int(_x, _x) {}
@@ -30,43 +35,24 @@ struct Vector2Int {
 
     static float angle(const Vector2Int& _from, const Vector2Int& _to);
 
-    static Vector2Int zero();
-    static Vector2Int one();
-    static Vector2Int right();
-    static Vector2Int left();
-    static Vector2Int up();
-    static Vector2Int down();
+    void operator+=(const Vector2Int& _v);
+    Vector2Int operator+(const Vector2Int& _v) const;
 
-    Vector2Int& operator+=(const Vector2Int& _v);
-    friend Vector2Int operator+(const Vector2Int& _lhs, const Vector2Int& _rhs);
+    void operator-=(const Vector2Int& _v);
+    Vector2Int operator-(const Vector2Int& _v) const;
+    Vector2Int operator-() const;
 
-    Vector2Int& operator-=(const Vector2Int& _v);
-    friend Vector2Int operator-(const Vector2Int& _lhs, const Vector2Int& _rhs);
-    Vector2Int operator-();
+    void operator*=(int _s);
+    Vector2Int operator*(int _s) const;
 
-    Vector2Int& operator*=(int _s);
-    friend Vector2Int operator*(const Vector2Int& _v, int _s);
-    friend Vector2Int operator*(int _s, const Vector2Int& _v);
-
-    Vector2Int& operator/=(int _s);
-    friend Vector2Int operator/(const Vector2Int& _v, int _s);
+    void operator/=(int _s);
+    Vector2Int operator/(int _s) const;
 
     Vector2Int& operator=(const Vector2Int& _v) = default;
 
-    friend bool operator==(const Vector2Int& _lhs, const Vector2Int& _rhs);
-    friend bool operator!=(const Vector2Int& _lhs, const Vector2Int& _rhs);
+    bool operator==(const Vector2Int& _v) const;
+    bool operator!=(const Vector2Int& _v) const;
 
     int operator[](size_t _i) const;
 
-};
-
-template<>
-struct std::formatter<Vector2Int> {
-    constexpr auto parse(std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    auto format(const Vector2Int& _v, std::format_context& _ctx) const {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

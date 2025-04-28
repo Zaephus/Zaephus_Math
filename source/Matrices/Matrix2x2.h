@@ -1,9 +1,8 @@
 
 #pragma once
 
-#include <cstddef>
-#include <string>
-#include <format>
+// #include <string>
+// #include <format>
 
 struct Vector2;
 
@@ -77,11 +76,11 @@ struct Matrix2x2 {
 
 template<>
 struct std::formatter<Matrix2x2> {
-    constexpr auto parse(std::format_parse_context& _ctx) {
+    static constexpr auto parse(const std::format_parse_context& _ctx) {
         return _ctx.begin();
     }
 
-    auto format(const Matrix2x2& _v, std::format_context& _ctx) const {
+    static auto format(const Matrix2x2& _v, std::format_context& _ctx) {
         return std::format_to(_ctx.out(), "{}", _v.toString());
     }
 };

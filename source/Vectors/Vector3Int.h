@@ -1,9 +1,8 @@
 
 #pragma once
 
-#include <cstddef>
-#include <string>
-#include <format>
+// #include <string>
+// #include <format>
 
 struct Vector3Int {
 
@@ -35,7 +34,7 @@ struct Vector3Int {
     static Vector3Int one();
     static Vector3Int right();
     static Vector3Int left();
-    static Vector3Int up();
+    static Vector3Int upVector();
     static Vector3Int down();
     static Vector3Int forward();
     static Vector3Int back();
@@ -65,11 +64,11 @@ struct Vector3Int {
 
 template<>
 struct std::formatter<Vector3Int> {
-    constexpr auto parse(std::format_parse_context& _ctx) {
+    static constexpr auto parse(const std::format_parse_context& _ctx) {
         return _ctx.begin();
     }
 
-    auto format(const Vector3Int& _v, std::format_context& _ctx) const {
+    static auto format(const Vector3Int& _v, std::format_context& _ctx) {
         return std::format_to(_ctx.out(), "{}", _v.toString());
     }
 };

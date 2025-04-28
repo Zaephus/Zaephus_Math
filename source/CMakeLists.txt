@@ -1,17 +1,28 @@
 
 add_library(${MATH_LIB_NAME} STATIC
-    Matrices/Matrix4x4.cpp
-    Matrices/Matrix3x3.cpp
     Matrices/Matrix2x2.cpp
+    Matrices/Matrix2x2.h
+    Matrices/Matrix3x3.cpp
+    Matrices/Matrix3x3.h
+    Matrices/Matrix4x4.cpp
+    Matrices/Matrix4x4.h
 
     Vectors/Vector2.cpp
+    Vectors/Vector2.h
     Vectors/Vector3.cpp
+    Vectors/Vector3.h
     Vectors/Vector4.cpp
+    Vectors/Vector4.h
     Vectors/Vector2Int.cpp
+    Vectors/Vector2Int.h
     Vectors/Vector3Int.cpp
+    Vectors/Vector3Int.h
     Vectors/Vector4Int.cpp
+    Vectors/Vector4Int.h
 
     Quaternion.cpp
+    Quaternion.h
+
     ZMath.h
 )
 

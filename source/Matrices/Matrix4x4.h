@@ -1,9 +1,8 @@
 
 #pragma once
 
-#include <cstddef>
-#include <string>
-#include <format>
+// #include <string>
+// #include <format>
 
 struct Vector3;
 struct Vector4;
@@ -53,10 +52,6 @@ struct Matrix4x4 {
     static Matrix4x4 translateMatrix(const Vector3& _v);
     static Matrix4x4 rotateMatrix(const Quaternion& _q);
 
-    // TODO: Lookat and perspective matrices are temporary.
-    static Matrix4x4 lookAt(const Vector3& _pos, const Vector3& _up, const Vector3& _center);
-    static Matrix4x4 perspective(float _fovY, float _aspect, float _near, float _far);
-
     static Matrix4x4 zero();
     static Matrix4x4 one();
     static Matrix4x4 identity();
@@ -92,11 +87,11 @@ struct Matrix4x4 {
 
 template<>
 struct std::formatter<Matrix4x4> {
-    constexpr auto parse(std::format_parse_context& _ctx) {
+    static constexpr auto parse(const std::format_parse_context& _ctx) {
         return _ctx.begin();
     }
 
-    auto format(const Matrix4x4& _v, std::format_context& _ctx) const {
+    static auto format(const Matrix4x4& _v, std::format_context& _ctx) {
         return std::format_to(_ctx.out(), "{}", _v.toString());
     }
 };
