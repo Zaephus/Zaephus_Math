@@ -1,5 +1,6 @@
 
-#include <iostream>
+#include "Vector4Int.h"
+
 #include <format>
 
 #include "../ZMath.h"
@@ -37,7 +38,7 @@ Vector4Int::Vector4Int(const Vector3Int& _v, const int _w) {
 }
 
 [[nodiscard]] float Vector4Int::magnitude() const {
-    return (float)std::sqrt(x*x + y*y + z*z + w*w);
+    return static_cast<float>(std::sqrt(x * x + y * y + z * z + w * w));
 }
 [[nodiscard]] int Vector4Int::squaredMagnitude() const {
     return x*x + y*y + z*z + w*w;
@@ -49,11 +50,11 @@ Vector4Int::Vector4Int(const Vector3Int& _v, const int _w) {
     return norm;
 }
 void Vector4Int::normalize() {
-    *this /= (int)std::round(magnitude());
+    *this /= static_cast<int>(std::round(magnitude()));
 }
 
 float Vector4Int::distance(const Vector4Int& _lhs, const Vector4Int& _rhs) {
-    return (float)std::sqrt((_rhs.x - _lhs.x) * (_rhs.x - _lhs.x) + (_rhs.y - _lhs.y) * (_rhs.y - _lhs.y) + (_rhs.z - _lhs.z) * (_rhs.z - _lhs.z) + (_rhs.w - _lhs.w) * (_rhs.w - _lhs.w));
+    return static_cast<float>(std::sqrt((_rhs.x - _lhs.x) * (_rhs.x - _lhs.x) + (_rhs.y - _lhs.y) * (_rhs.y - _lhs.y) + (_rhs.z - _lhs.z) * (_rhs.z - _lhs.z) + (_rhs.w - _lhs.w) * (_rhs.w - _lhs.w)));
 }
 
 int Vector4Int::dot(const Vector4Int& _lhs, const Vector4Int& _rhs) {
@@ -61,77 +62,80 @@ int Vector4Int::dot(const Vector4Int& _lhs, const Vector4Int& _rhs) {
 }
 
 float Vector4Int::angle(const Vector4Int& _from, const Vector4Int& _to) {
-    const float delta = (float)dot(_from, _to);
+    const float delta = static_cast<float>(dot(_from, _to));
     return std::acos(delta / (_from.magnitude() * _to.magnitude()));
 }
 
 Vector4Int Vector4Int::zero() { return { 0, 0, 0, 0 }; }
 Vector4Int Vector4Int::one()  { return { 1, 1, 1, 1 }; }
 
-Vector4Int& Vector4Int::operator+=(const Vector4Int& _v) {
+void Vector4Int::operator+=(const Vector4Int& _v) {
     *this = *this + _v;
-    return *this;
 }
-Vector4Int operator+(const Vector4Int& _lhs, const Vector4Int& _rhs) {
+Vector4Int Vector4Int::operator+(const Vector4Int& _v) const {
     return {
-        _lhs.x + _rhs.x,
-        _lhs.y + _rhs.y,
-        _lhs.z + _rhs.z,
-        _lhs.w + _rhs.w
+        x + _v.x,
+        y + _v.y,
+        z + _v.z,
+        w + _v.w
     };
 }
 
-Vector4Int& Vector4Int::operator-=(const Vector4Int& _v) {
+void Vector4Int::operator-=(const Vector4Int& _v) {
     *this = *this + _v;
-    return *this;
 }
-Vector4Int operator-(const Vector4Int& _lhs, const Vector4Int& _rhs) {
+Vector4Int Vector4Int::operator-(const Vector4Int& _v) const {
     return {
-        _lhs.x - _rhs.x,
-        _lhs.y - _rhs.y,
-        _lhs.z - _rhs.z,
-        _lhs.w - _rhs.w
+        x - _v.x,
+        y - _v.y,
+        z - _v.z,
+        w - _v.w
     };
 }
-Vector4Int Vector4Int::operator-() {
-    *this = -1 * *this;
-    return *this;
+Vector4Int Vector4Int::operator-() const {
+    return {
+        -x,
+        -y,
+        -z,
+        -w
+    };
 }
 
-Vector4Int& Vector4Int::operator*=(const int _s) {
+void Vector4Int::operator*=(const int _s) {
     *this = *this * _s;
-    return *this;
 }
-Vector4Int operator*(const Vector4Int& _v, const int _s) {
+Vector4Int Vector4Int::operator*(const int _s) const {
     return {
-        _v.x * _s,
-        _v.y * _s,
-        _v.z * _s,
-        _v.w * _s
+        x * _s,
+        y * _s,
+        z * _s,
+        w * _s
     };
 }
 Vector4Int operator*(const int _s, const Vector4Int& _v) {
     return _v * _s;
 }
 
-Vector4Int& Vector4Int::operator/=(const int _s) {
+void Vector4Int::operator/=(const int _s) {
     *this = *this / _s;
-    return *this;
 }
-Vector4Int operator/(const Vector4Int& _v, const int _s) {
+Vector4Int Vector4Int::operator/(const int _s) const {
     return {
-        _v.x / _s,
-        _v.y / _s,
-        _v.z / _s,
-        _v.w / _s
+        x / _s,
+        y / _s,
+        z / _s,
+        w / _s
     };
 }
 
-bool operator==(const Vector4Int& _lhs, const Vector4Int& _rhs) {
-    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z) && ZMath::isRelativelyEqual(_lhs.w, _rhs.w);
+bool Vector4Int::operator==(const Vector4Int& _v) const {
+    return ZMath::isApproxEqual(x, _v.x) &&
+           ZMath::isApproxEqual(y, _v.y) &&
+           ZMath::isApproxEqual(z, _v.z) &&
+           ZMath::isApproxEqual(w, _v.w);
 }
-bool operator!=(const Vector4Int& _lhs, const Vector4Int& _rhs) {
-    return !(_lhs == _rhs);
+bool Vector4Int::operator!=(const Vector4Int& _v) const {
+    return !(*this == _v);
 }
 
 int Vector4Int::operator[](const size_t _i) const {

@@ -1,13 +1,11 @@
 
 #pragma once
 
-// #include <string>
-// #include <format>
+#include <iosfwd>
 
 struct Vector2;
 
 struct Matrix2x2 {
-
     float m00 = 0, m01 = 0;
     float m10 = 0, m11 = 0;
 
@@ -41,46 +39,32 @@ struct Matrix2x2 {
     );
 
     static Matrix2x2 zero();
-
     static Matrix2x2 one();
-
     static Matrix2x2 identity();
 
-    Matrix2x2& operator+=(const Matrix2x2& _m);
-    friend Matrix2x2 operator+(const Matrix2x2& _lhs, const Matrix2x2& _rhs);
+    void operator+=(const Matrix2x2& _m);
+    Matrix2x2 operator+(const Matrix2x2& _m) const;
 
-    Matrix2x2& operator-=(const Matrix2x2& _m);
-    friend Matrix2x2 operator-(const Matrix2x2& _lhs, const Matrix2x2& _rhs);
-    Matrix2x2 operator-();
+    void operator-=(const Matrix2x2& _m);
+    Matrix2x2 operator-(const Matrix2x2& _m) const;
+    Matrix2x2 operator-() const;
 
-    Matrix2x2 operator*=(const Matrix2x2& _m);
-    friend Matrix2x2 operator*(const Matrix2x2& _lhs, const Matrix2x2& _rhs);
+    void operator*=(const Matrix2x2& _m);
+    Matrix2x2 operator*(const Matrix2x2& _m) const;
 
-    friend Vector2 operator*(const Matrix2x2& _m, const Vector2& _v);
+    Vector2 operator*(const Vector2& _v) const;
 
-    Matrix2x2& operator*=(float _s);
-    friend Matrix2x2 operator*(const Matrix2x2& _m, float _s);
+    void operator*=(float _s);
+    Matrix2x2 operator*(float _s) const;
     friend Matrix2x2 operator*(float _s, const Matrix2x2& _m);
 
-    Matrix2x2& operator/=(float _s);
-    friend Matrix2x2 operator/(const Matrix2x2& _m, float _s);
+    void operator/=(float _s);
+    Matrix2x2 operator/(float _s) const;
 
     Matrix2x2& operator=(const Matrix2x2& _m) = default;
 
-    friend bool operator==(const Matrix2x2& _lhs, const Matrix2x2& _rhs);
-    friend bool operator!=(const Matrix2x2& _lhs, const Matrix2x2& _rhs);
+    bool operator==(const Matrix2x2& _m) const;
+    bool operator!=(const Matrix2x2& _m) const;
 
     Vector2 operator[](size_t _i) const;
-
-};
-
-template<>
-struct std::formatter<Matrix2x2> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Matrix2x2& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

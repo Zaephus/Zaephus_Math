@@ -1,11 +1,9 @@
 
 #pragma once
 
-// #include <string>
-// #include <format>
+#include <iosfwd>
 
 struct Vector3Int {
-
     int x = 0;
     int y = 0;
     int z = 0;
@@ -34,41 +32,29 @@ struct Vector3Int {
     static Vector3Int one();
     static Vector3Int right();
     static Vector3Int left();
-    static Vector3Int upVector();
+    static Vector3Int up();
     static Vector3Int down();
     static Vector3Int forward();
     static Vector3Int back();
 
-    Vector3Int& operator+=(const Vector3Int& _v);
-    friend Vector3Int operator+(const Vector3Int& _lhs, const Vector3Int& _rhs);
+    void operator+=(const Vector3Int& _v);
+    Vector3Int operator+(const Vector3Int& _v) const;
 
-    Vector3Int& operator-=(const Vector3Int& _v);
-    friend Vector3Int operator-(const Vector3Int& _lhs, const Vector3Int& _rhs);
-    Vector3Int operator-();
+    void operator-=(const Vector3Int& _v);
+    Vector3Int operator-(const Vector3Int& _v) const;
+    Vector3Int operator-() const;
 
-    Vector3Int& operator*=(int _s);
-    friend Vector3Int operator*(const Vector3Int& _v, int _s);
+    void operator*=(int _s);
+    Vector3Int operator*(int _s) const;
     friend Vector3Int operator*(int _s, const Vector3Int& _v);
 
-    Vector3Int& operator/=(int _s);
-    friend Vector3Int operator/(const Vector3Int& _v, int _s);
+    void operator/=(int _s);
+    Vector3Int operator/(int _s) const;
 
     Vector3Int& operator=(const Vector3Int& _v) = default;
 
-    friend bool operator==(const Vector3Int& _lhs, const Vector3Int& _rhs);
-    friend bool operator!=(const Vector3Int& _lhs, const Vector3Int& _rhs);
+    bool operator==(const Vector3Int& _v) const;
+    bool operator!=(const Vector3Int& _v) const;
 
     int operator[](size_t _i) const;
-
-};
-
-template<>
-struct std::formatter<Vector3Int> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Vector3Int& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

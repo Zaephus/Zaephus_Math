@@ -1,10 +1,10 @@
 
+#include "Matrix2x2.h"
+
 #include <iostream>
 #include <format>
 
 #include "../ZMath.h"
-#include "Matrix2x2.h"
-
 
 Matrix2x2::Matrix2x2() {
     *this = identity();
@@ -150,90 +150,83 @@ Matrix2x2 Matrix2x2::identity() {
     };
 }
 
-Matrix2x2& Matrix2x2::operator+=(const Matrix2x2& _m) {
+void Matrix2x2::operator+=(const Matrix2x2& _m) {
     *this = *this + _m;
-    return *this;
 }
-Matrix2x2 operator+(const Matrix2x2& _lhs, const Matrix2x2& _rhs) {
+Matrix2x2 Matrix2x2::operator+(const Matrix2x2& _m) const {
     return {
-        _lhs.m00 + _rhs.m00, _lhs.m01 + _rhs.m01,
-        _lhs.m10 + _rhs.m10, _lhs.m11 + _rhs.m11
+        m00 + _m.m00, m01 + _m.m01,
+        m10 + _m.m10, m11 + _m.m11
     };
 }
 
-Matrix2x2& Matrix2x2::operator-=(const Matrix2x2& _m) {
+void Matrix2x2::operator-=(const Matrix2x2& _m) {
     *this = *this - _m;
-    return *this;
 }
-Matrix2x2 operator-(const Matrix2x2& _lhs, const Matrix2x2& _rhs) {
+Matrix2x2 Matrix2x2::operator-(const Matrix2x2& _m) const {
     return {
-        _lhs.m00 - _rhs.m00, _lhs.m01 - _rhs.m01,
-        _lhs.m10 - _rhs.m10, _lhs.m11 - _rhs.m11
+        m00 - _m.m00, m01 - _m.m01,
+        m10 - _m.m10, m11 - _m.m11
     };
 }
-Matrix2x2 Matrix2x2::operator-() {
-    *this = -1 * *this;
-    return *this;
+Matrix2x2 Matrix2x2::operator-() const {
+    return {
+        -m00, -m01,
+        -m10, -m11
+    };
 }
 
-Matrix2x2 Matrix2x2::operator*=(const Matrix2x2& _m) {
+void Matrix2x2::operator*=(const Matrix2x2& _m) {
     *this = *this * _m;
-    return *this;
 }
-Matrix2x2 operator*(const Matrix2x2& _lhs, const Matrix2x2& _rhs) {
+Matrix2x2 Matrix2x2::operator*(const Matrix2x2& _m) const {
     return {
-        _lhs.m00 * _rhs.m00 + _lhs.m01 * _rhs.m10,
-        _lhs.m00 * _rhs.m01 + _lhs.m01 * _rhs.m11,
+        m00 * _m.m00 + m01 * _m.m10,
+        m00 * _m.m01 + m01 * _m.m11,
 
-        _lhs.m10 * _rhs.m00 + _lhs.m11 * _rhs.m10,
-        _lhs.m10 * _rhs.m01 + _lhs.m11 * _rhs.m11
+        m10 * _m.m00 + m11 * _m.m10,
+        m10 * _m.m01 + m11 * _m.m11
     };
 }
 
-Vector2 operator*(const Matrix2x2& _m, const Vector2& _v) {
+Vector2 Matrix2x2::operator*(const Vector2& _v) const {
     return {
-        _m.m00 * _v.x + _m.m01 * _v.y,
-        _m.m10 * _v.x + _m.m11 * _v.y
+        m00 * _v.x + m01 * _v.y,
+        m10 * _v.x + m11 * _v.y
     };
 }
 
-Matrix2x2& Matrix2x2::operator*=(const float _s) {
+void Matrix2x2::operator*=(const float _s) {
     *this = *this * _s;
-    return *this;
 }
-Matrix2x2 operator*(const Matrix2x2& _m, const float _s) {
+Matrix2x2 Matrix2x2::operator*(const float _s) const {
     return {
-        _m.m00 * _s, _m.m01 * _s,
-        _m.m10 * _s, _m.m11 * _s
+        m00 * _s, m01 * _s,
+        m10 * _s, m11 * _s
     };
 }
 Matrix2x2 operator*(const float _s, const Matrix2x2& _m) {
     return _m * _s;
 }
 
-Matrix2x2& Matrix2x2::operator/=(const float _s) {
+void Matrix2x2::operator/=(const float _s) {
     *this = *this / _s;
-    return *this;
 }
-Matrix2x2 operator/(const Matrix2x2& _m, const float _s) {
+Matrix2x2 Matrix2x2::operator/(const float _s) const {
     return {
-        _m.m00 / _s, _m.m01 / _s,
-        _m.m10 / _s, _m.m11 / _s
+        m00 / _s, m01 / _s,
+        m10 / _s, m11 / _s
     };
 }
 
-bool operator==(const Matrix2x2& _lhs, const Matrix2x2& _rhs) {
-    for(size_t x = 0; x < 2; x++) {
-        for(size_t y = 0; y < 2; y++) {
-            if(!ZMath::isRelativelyEqual(_lhs[x][y], _rhs[x][y])) {
-                return false;
-            }
-        }
-    }
-    return true;
+bool Matrix2x2::operator==(const Matrix2x2& _m) const {
+    return ZMath::isApproxEqual(m00, _m.m00) &&
+           ZMath::isApproxEqual(m01, _m.m01) &&
+           ZMath::isApproxEqual(m10, _m.m10) &&
+           ZMath::isApproxEqual(m11, _m.m11);
 }
-bool operator!=(const Matrix2x2& _lhs, const Matrix2x2& _rhs) {
-    return !(_lhs == _rhs);
+bool Matrix2x2::operator!=(const Matrix2x2& _m) const {
+    return !(*this == _m);
 }
 
 Vector2 Matrix2x2::operator[](const size_t _i) const {

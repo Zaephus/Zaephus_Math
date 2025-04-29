@@ -1,4 +1,6 @@
 
+#include "Matrix3x3.h"
+
 #include <iostream>
 #include <format>
 
@@ -192,101 +194,100 @@ Matrix3x3 Matrix3x3::identity() {
     };
 }
 
-Matrix3x3& Matrix3x3::operator+=(const Matrix3x3& _m) {
+void Matrix3x3::operator+=(const Matrix3x3& _m) {
     *this = *this + _m;
-    return *this;
 }
-Matrix3x3 operator+(const Matrix3x3& _lhs, const Matrix3x3& _rhs) {
+Matrix3x3 Matrix3x3::operator+(const Matrix3x3& _m) const {
     return {
-        _lhs.m00 + _rhs.m00, _lhs.m01 + _rhs.m01, _lhs.m02 + _rhs.m02,
-        _lhs.m10 + _rhs.m10, _lhs.m11 + _rhs.m11, _lhs.m12 + _rhs.m12,
-        _lhs.m20 + _rhs.m20, _lhs.m21 + _rhs.m21, _lhs.m22 + _rhs.m22
+        m00 + _m.m00, m01 + _m.m01, m02 + _m.m02,
+        m10 + _m.m10, m11 + _m.m11, m12 + _m.m12,
+        m20 + _m.m20, m21 + _m.m21, m22 + _m.m22
     };
 }
 
-Matrix3x3& Matrix3x3::operator-=(const Matrix3x3& _m) {
+void Matrix3x3::operator-=(const Matrix3x3& _m) {
     *this = *this - _m;
-    return *this;
 }
-Matrix3x3 operator-(const Matrix3x3& _lhs, const Matrix3x3& _rhs) {
+Matrix3x3 Matrix3x3::operator-(const Matrix3x3& _m) const {
     return {
-        _lhs.m00 - _rhs.m00, _lhs.m01 - _rhs.m01, _lhs.m02 - _rhs.m02,
-        _lhs.m10 - _rhs.m10, _lhs.m11 - _rhs.m11, _lhs.m12 - _rhs.m12,
-        _lhs.m20 - _rhs.m20, _lhs.m21 - _rhs.m21, _lhs.m22 - _rhs.m22
+        m00 - _m.m00, m01 - _m.m01, m02 - _m.m02,
+        m10 - _m.m10, m11 - _m.m11, m12 - _m.m12,
+        m20 - _m.m20, m21 - _m.m21, m22 - _m.m22
     };
 }
-Matrix3x3 Matrix3x3::operator-() {
-    *this = -1 * *this;
-    return *this;
+Matrix3x3 Matrix3x3::operator-() const {
+    return {
+        -m00, -m01, -m02,
+        -m10, -m11, -m12,
+        -m20, -m21, -m22
+    };
 }
 
-Matrix3x3 Matrix3x3::operator*=(const Matrix3x3& _m) {
+void Matrix3x3::operator*=(const Matrix3x3& _m) {
     *this = *this * _m;
-    return *this;
 }
-Matrix3x3 operator*(const Matrix3x3& _lhs, const Matrix3x3& _rhs) {
+Matrix3x3 Matrix3x3::operator*(const Matrix3x3& _m) const {
     return {
-        _lhs.m00 * _rhs.m00 + _lhs.m01 * _rhs.m10 + _lhs.m02 * _rhs.m20,
-        _lhs.m00 * _rhs.m01 + _lhs.m01 * _rhs.m11 + _lhs.m02 * _rhs.m21,
-        _lhs.m00 * _rhs.m02 + _lhs.m01 * _rhs.m12 + _lhs.m02 * _rhs.m22,
+        m00 * _m.m00 + m01 * _m.m10 + m02 * _m.m20,
+        m00 * _m.m01 + m01 * _m.m11 + m02 * _m.m21,
+        m00 * _m.m02 + m01 * _m.m12 + m02 * _m.m22,
 
-        _lhs.m10 * _rhs.m00 + _lhs.m11 * _rhs.m10 + _lhs.m12 * _rhs.m20,
-        _lhs.m10 * _rhs.m01 + _lhs.m11 * _rhs.m11 + _lhs.m12 * _rhs.m21,
-        _lhs.m10 * _rhs.m02 + _lhs.m11 * _rhs.m12 + _lhs.m12 * _rhs.m22,
+        m10 * _m.m00 + m11 * _m.m10 + m12 * _m.m20,
+        m10 * _m.m01 + m11 * _m.m11 + m12 * _m.m21,
+        m10 * _m.m02 + m11 * _m.m12 + m12 * _m.m22,
 
-        _lhs.m20 * _rhs.m00 + _lhs.m21 * _rhs.m10 + _lhs.m22 * _rhs.m20,
-        _lhs.m20 * _rhs.m01 + _lhs.m21 * _rhs.m11 + _lhs.m22 * _rhs.m21,
-        _lhs.m20 * _rhs.m02 + _lhs.m21 * _rhs.m12 + _lhs.m22 * _rhs.m22
+        m20 * _m.m00 + m21 * _m.m10 + m22 * _m.m20,
+        m20 * _m.m01 + m21 * _m.m11 + m22 * _m.m21,
+        m20 * _m.m02 + m21 * _m.m12 + m22 * _m.m22
     };
 }
 
-Vector3 operator*(const Matrix3x3& _m, const Vector3& _v)  {
+Vector3 Matrix3x3::operator*(const Vector3& _v) const {
     return {
-        _m.m00 * _v.x + _m.m01 * _v.y + _m.m02 * _v.z,
-        _m.m10 * _v.x + _m.m11 * _v.y + _m.m12 * _v.z,
-        _m.m20 * _v.x + _m.m21 * _v.y + _m.m22 * _v.z
+        m00 * _v.x + m01 * _v.y + m02 * _v.z,
+        m10 * _v.x + m11 * _v.y + m12 * _v.z,
+        m20 * _v.x + m21 * _v.y + m22 * _v.z
     };
 }
 
-Matrix3x3& Matrix3x3::operator*=(const float _s) {
+void Matrix3x3::operator*=(const float _s) {
     *this = *this * _s;
-    return *this;
 }
-Matrix3x3 operator*(const Matrix3x3& _m, const float _s) {
+Matrix3x3 Matrix3x3::operator*(const float _s) const {
     return {
-        _m.m00 * _s, _m.m01 * _s, _m.m02 * _s,
-        _m.m10 * _s, _m.m11 * _s, _m.m12 * _s,
-        _m.m20 * _s, _m.m21 * _s, _m.m22 * _s
+        m00 * _s, m01 * _s, m02 * _s,
+        m10 * _s, m11 * _s, m12 * _s,
+        m20 * _s, m21 * _s, m22 * _s
     };
 }
 Matrix3x3 operator*(const float _s, const Matrix3x3& _m) {
     return _m * _s;
 }
 
-Matrix3x3& Matrix3x3::operator/=(const float _s) {
+void Matrix3x3::operator/=(const float _s) {
     *this = *this / _s;
-    return *this;
 }
-Matrix3x3 operator/(const Matrix3x3& _m, const float _s) {
+Matrix3x3 Matrix3x3::operator/(const float _s) const {
     return {
-        _m.m00 / _s, _m.m01 / _s, _m.m02 / _s,
-        _m.m10 / _s, _m.m11 / _s, _m.m12 / _s,
-        _m.m20 / _s, _m.m21 / _s, _m.m22 / _s
+        m00 / _s, m01 / _s, m02 / _s,
+        m10 / _s, m11 / _s, m12 / _s,
+        m20 / _s, m21 / _s, m22 / _s
     };
 }
 
-bool operator==(const Matrix3x3& _lhs, const Matrix3x3& _rhs) {
-    for(size_t x = 0; x < 3; x++) {
-        for(size_t y = 0; y < 3; y++) {
-            if(!ZMath::isRelativelyEqual(_lhs[x][y], _rhs[x][y])) {
-                return false;
-            }
-        }
-    }
-    return true;
+bool Matrix3x3::operator==(const Matrix3x3& _m) const {
+    return ZMath::isApproxEqual(m00, _m.m00) &&
+           ZMath::isApproxEqual(m01, _m.m01) &&
+           ZMath::isApproxEqual(m02, _m.m02) &&
+           ZMath::isApproxEqual(m10, _m.m10) &&
+           ZMath::isApproxEqual(m11, _m.m11) &&
+           ZMath::isApproxEqual(m12, _m.m12) &&
+           ZMath::isApproxEqual(m20, _m.m20) &&
+           ZMath::isApproxEqual(m21, _m.m21) &&
+           ZMath::isApproxEqual(m22, _m.m22);
 }
-bool operator!=(const Matrix3x3& _lhs, const Matrix3x3& _rhs) {
-    return !(_lhs == _rhs);
+bool Matrix3x3::operator!=(const Matrix3x3& _m) const {
+    return !(*this == _m);
 }
 
 Vector3 Matrix3x3::operator[](const size_t _i) const {

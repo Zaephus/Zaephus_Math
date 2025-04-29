@@ -4,16 +4,8 @@
 #include <iosfwd>
 
 struct Vector2 {
-
     float x = 0;
     float y = 0;
-
-    static Vector2 zero;
-    static Vector2 one;
-    static Vector2 right;
-    static Vector2 left;
-    static Vector2 up;
-    static Vector2 down;
 
     Vector2();
     explicit Vector2(const float _x) : Vector2(_x, _x) {}
@@ -35,6 +27,13 @@ struct Vector2 {
 
     static float angle(const Vector2& _from, const Vector2& _to);
 
+    static Vector2 zero();
+    static Vector2 one();
+    static Vector2 right();
+    static Vector2 left();
+    static Vector2 up();
+    static Vector2 down();
+
     void operator+=(const Vector2& _v);
     Vector2 operator+(const Vector2& _v) const;
 
@@ -44,6 +43,7 @@ struct Vector2 {
 
     void operator*=(float _s);
     Vector2 operator*(float _s) const;
+    friend Vector2 operator*(float _s, const Vector2& _v);
 
     void operator/=(float _s);
     Vector2 operator/(float _s) const;
@@ -54,5 +54,4 @@ struct Vector2 {
     bool operator!=(const Vector2& _v) const;
 
     float operator[](size_t _i) const;
-
 };

@@ -5,15 +5,8 @@
 
 #include "../ZMath.h"
 
-Vector2 Vector2::zero  = { 0.0f,  0.0f };
-Vector2 Vector2::one   = { 1.0f,  1.0f };
-Vector2 Vector2::right = { 1.0f,  0.0f };
-Vector2 Vector2::left  = { -1.0f, 0.0f };
-Vector2 Vector2::up    = { 0.0f,  1.0f };
-Vector2 Vector2::down  = { 0.0f, -1.0f };
-
 Vector2::Vector2() {
-    *this = zero;
+    *this = zero();
 }
 
 Vector2::Vector2(const float _x, const float _y) {
@@ -68,6 +61,13 @@ float Vector2::angle(const Vector2& _from, const Vector2& _to) {
     return std::acos(delta / (_from.magnitude() * _to.magnitude()));
 }
 
+Vector2 Vector2::zero()  { return { 0.0f,  0.0f }; }
+Vector2 Vector2::one()   { return { 1.0f,  1.0f }; }
+Vector2 Vector2::right() { return { 1.0f,  0.0f }; }
+Vector2 Vector2::left()  { return { -1.0f, 0.0f }; }
+Vector2 Vector2::up()    { return { 0.0f,  1.0f }; }
+Vector2 Vector2::down()  { return { 0.0f, -1.0f }; }
+
 void Vector2::operator+=(const Vector2& _v) {
     *this = *this + _v;
 }
@@ -103,6 +103,9 @@ Vector2 Vector2::operator*(const float _s) const {
         y * _s
     };
 }
+Vector2 operator*(const float _s, const Vector2& _v) {
+    return _v * _s;
+}
 
 void Vector2::operator/=(const float _s) {
     *this = *this / _s;
@@ -115,7 +118,8 @@ Vector2 Vector2::operator/(const float _s) const {
 }
 
 bool Vector2::operator==(const Vector2& _v) const {
-    return ZMath::isRelativelyEqual(x, _v.x) && ZMath::isRelativelyEqual(y, _v.y);
+    return ZMath::isApproxEqual(x, _v.x) &&
+           ZMath::isApproxEqual(y, _v.y);
 }
 bool Vector2::operator!=(const Vector2& _v) const {
     return !(*this == _v);

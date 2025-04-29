@@ -1,13 +1,11 @@
 
 #pragma once
 
-// #include <string>
-// #include <format>
+#include <iosfwd>
 
 struct Vector3;
 
 struct Matrix3x3 {
-
     float m00 = 0, m01 = 0, m02 = 0;
     float m10 = 0, m11 = 0, m12 = 0;
     float m20 = 0, m21 = 0, m22 = 0;
@@ -47,41 +45,29 @@ struct Matrix3x3 {
     static Matrix3x3 one();
     static Matrix3x3 identity();
 
-    Matrix3x3& operator+=(const Matrix3x3& _m);
-    friend Matrix3x3 operator+(const Matrix3x3& _lhs, const Matrix3x3& _rhs);
+    void operator+=(const Matrix3x3& _m);
+    Matrix3x3 operator+(const Matrix3x3& _m) const;
 
-    Matrix3x3& operator-=(const Matrix3x3& _m);
-    friend Matrix3x3 operator-(const Matrix3x3& _lhs, const Matrix3x3& _rhs);
-    Matrix3x3 operator-();
+    void operator-=(const Matrix3x3& _m);
+    Matrix3x3 operator-(const Matrix3x3& _m) const;
+    Matrix3x3 operator-() const;
 
-    Matrix3x3 operator*=(const Matrix3x3& _m);
-    friend Matrix3x3 operator*(const Matrix3x3& _lhs, const Matrix3x3& _rhs);
+    void operator*=(const Matrix3x3& _m);
+    Matrix3x3 operator*(const Matrix3x3& _m) const;
 
-    friend Vector3 operator*(const Matrix3x3& _m, const Vector3& _v);
+    Vector3 operator*(const Vector3& _v) const;
 
-    Matrix3x3& operator*=(float _s);
-    friend Matrix3x3 operator*(const Matrix3x3& _m, float _s);
+    void operator*=(float _s);
+    Matrix3x3 operator*(float _s) const;
     friend Matrix3x3 operator*(float _s, const Matrix3x3& _m);
 
-    Matrix3x3& operator/=(float _s);
-    friend Matrix3x3 operator/(const Matrix3x3& _m, float _s);
+    void operator/=(float _s);
+    Matrix3x3 operator/(float _s) const;
 
     Matrix3x3& operator=(const Matrix3x3& _m) = default;
 
-    friend bool operator==(const Matrix3x3& _lhs, const Matrix3x3& _rhs);
-    friend bool operator!=(const Matrix3x3& _lhs, const Matrix3x3& _rhs);
+    bool operator==(const Matrix3x3& _m) const;
+    bool operator!=(const Matrix3x3& _m) const;
 
     Vector3 operator[](size_t _i) const;
-
-};
-
-template<>
-struct std::formatter<Matrix3x3> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Matrix3x3& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

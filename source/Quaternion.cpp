@@ -1,4 +1,6 @@
 
+#include "Quaternion.h"
+
 #include <iostream>
 #include <format>
 #include <stdexcept>
@@ -46,7 +48,7 @@ void Quaternion::normalize() {
 }
 
 void Quaternion::invert() {
-    float mag = magnitude();
+    const float mag = magnitude();
     *this = conjugate() / (mag * mag);
 }
 
@@ -103,7 +105,7 @@ Quaternion Quaternion::fromEuler(const Vector3& _eulerDeg) {
 
 Quaternion Quaternion::fromAxisAngle(const Vector3& _axis, const float _angleRad) {
     const Vector3 axis = _axis.normalized();
-    float axisComponent = std::sin(_angleRad * 0.5f);
+    const float axisComponent = std::sin(_angleRad * 0.5f);
     return {
         axis.x * axisComponent,
         axis.y * axisComponent,
@@ -123,107 +125,94 @@ float Quaternion::angleBetween(const Quaternion& _lhs, const Quaternion& _rhs) {
 
 Quaternion Quaternion::identity() { return { 0.0f, 0.0f, 0.0f, 1.0f }; }
 
-Quaternion& Quaternion::operator+=(const Quaternion& _q) {
+void Quaternion::operator+=(const Quaternion& _q) {
     *this = *this + _q;
-    return *this;
 }
-Quaternion operator+(const Quaternion& _lhs, const Quaternion& _rhs) {
+Quaternion Quaternion::operator+(const Quaternion& _q) const {
     return {
-        _lhs.x + _rhs.x,
-        _lhs.y + _rhs.y,
-        _lhs.z + _rhs.z,
-        _lhs.w + _rhs.w
+        x + _q.x,
+        y + _q.y,
+        z + _q.z,
+        w + _q.w
     };
 }
 
-Quaternion& Quaternion::operator-=(const Quaternion& _q) {
+void Quaternion::operator-=(const Quaternion& _q) {
     *this = *this - _q;
-    return *this;
 }
-Quaternion operator-(const Quaternion& _lhs, const Quaternion& _rhs) {
+Quaternion Quaternion::operator-(const Quaternion& _q) const {
     return {
-        _lhs.x - _rhs.x,
-        _lhs.y - _rhs.y,
-        _lhs.z - _rhs.z,
-        _lhs.w - _rhs.w
+        x - _q.x,
+        y - _q.y,
+        z - _q.z,
+        w - _q.w
     };
 }
-Quaternion Quaternion::operator-() {
-    *this = -1 * *this;
-    return *this;
+Quaternion Quaternion::operator-() const {
+    return {
+        -x,
+        -y,
+        -z,
+        -w
+    };
 }
 
-Quaternion Quaternion::operator*=(const Quaternion& _q) {
+void Quaternion::operator*=(const Quaternion& _q) {
     *this = *this * _q;
-    return *this;
 }
-Quaternion operator*(const Quaternion& _a, const Quaternion& _b) {
-//    float w1, w2;
-//    float x1, x2;
-//    float y1, y2;
-//    float z1, z2;
-//    float x, y, z, w;
-//
-//    z = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
-//    x = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2;
-//    y = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2;
-//    w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
-//
-//    float test = w * x * y * z;
+Quaternion Quaternion::operator*(const Quaternion& _q) const {
     return {
-        _a.w * _b.x + _a.x * _b.w + _a.y * _b.z - _a.z * _b.y,
-        _a.w * _b.y - _a.x * _b.z + _a.y * _b.w + _a.z * _b.x,
-        _a.w * _b.z + _a.x * _b.y - _a.y * _b.x + _a.z * _b.w,
-        _a.w * _b.w - _a.x * _b.x - _a.y * _b.y - _a.z * _b.z
+        w * _q.x + x * _q.w + y * _q.z - z * _q.y,
+        w * _q.y - x * _q.z + y * _q.w + z * _q.x,
+        w * _q.z + x * _q.y - y * _q.x + z * _q.w,
+        w * _q.w - x * _q.x - y * _q.y - z * _q.z
     };
 }
 
-Vector3 operator*(const Quaternion& _q, const Vector3& _v) {
-    const Quaternion rotInverse = { -_q.x, -_q.y, -_q.z, _q.w };
+Vector3 Quaternion::operator*(const Vector3& _v) const {
+    const Quaternion rotInverse = { -x, -y, -z, w };
     const Quaternion vecQ = { _v.x, _v.y, _v.z, 0.0f };
 
-    const Quaternion result = _q * vecQ * rotInverse;
+    const Quaternion result = *this * vecQ * rotInverse;
 
     return { result.x , result.y, result.z };
 }
 
-Quaternion& Quaternion::operator*=(const float _s) {
+void Quaternion::operator*=(const float _s) {
     *this = *this * _s;
-    return *this;
 }
-Quaternion operator*(const Quaternion& _q, const float _s) {
+Quaternion Quaternion::operator*(const float _s) const {
     return{
-        _q.x * _s,
-        _q.y * _s,
-        _q.z * _s,
-        _q.w * _s
+        x * _s,
+        y * _s,
+        z * _s,
+        w * _s
     };
 }
 Quaternion operator*(const float _s, const Quaternion& _q) {
     return _q * _s;
 }
 
-Quaternion& Quaternion::operator/=(const float _s) {
-    this->x /= _s;
-    this->y /= _s;
-    this->z /= _s;
-    this->w /= _s;
-    return *this;
+void Quaternion::operator/=(const float _s) {
+    *this = *this / _s;
 }
-Quaternion operator/(const Quaternion& _q, const float _s) {
+Quaternion Quaternion::operator/(const float _s) const {
     return {
-        _q.x / _s,
-        _q.y / _s,
-        _q.z / _s,
-        _q.w / _s
+        x / _s,
+        y / _s,
+        z / _s,
+        w / _s
     };
 }
 
-bool operator==(const Quaternion& _lhs, const Quaternion& _rhs) {
-    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z) && ZMath::isRelativelyEqual(_lhs.w, _rhs.w);
+bool Quaternion::operator==(const Quaternion& _q) const {
+    return ZMath::isApproxEqual(x, _q.x) &&
+           ZMath::isApproxEqual(y, _q.y) &&
+           ZMath::isApproxEqual(z, _q.z) &&
+           ZMath::isApproxEqual(w, _q.w);
 }
-bool operator!=(const Quaternion& _lhs, const Quaternion& _rhs) {
-    return !(_lhs == _rhs);
+bool Quaternion::operator!=(const Quaternion& _q) const {
+    return !(*this == _q);
 }
 
 float Quaternion::operator[](const size_t _i) const {

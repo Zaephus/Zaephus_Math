@@ -31,7 +31,7 @@ class ZMath {
         static constexpr float deg2rad = pi / 180.0f;
 
         template <typename T>
-        static bool isRelativelyEqual(T _a, T _b, float _epsilon = epsilon) {
+        static bool isApproxEqual(T _a, T _b, float _epsilon = epsilon) {
             const float diff = std::abs(_a - _b);
 
             _a = std::abs(_a);

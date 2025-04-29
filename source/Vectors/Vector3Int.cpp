@@ -1,5 +1,6 @@
 
-#include <iostream>
+#include "Vector3Int.h"
+
 #include <format>
 
 #include "../ZMath.h"
@@ -23,7 +24,7 @@ Vector3Int::Vector3Int(const Vector3Int& _v) {
 }
 
 [[nodiscard]] float Vector3Int::magnitude() const {
-    return (float)std::sqrt(x*x + y*y + z*z);
+    return static_cast<float>(std::sqrt(x * x + y * y + z * z));
 }
 [[nodiscard]] int Vector3Int::squaredMagnitude() const {
     return x*x + y*y + z*z;
@@ -35,11 +36,11 @@ Vector3Int::Vector3Int(const Vector3Int& _v) {
     return norm;
 }
 void Vector3Int::normalize() {
-    *this /= (int)std::round(magnitude());
+    *this /= static_cast<int>(std::round(magnitude()));
 }
 
 float Vector3Int::distance(const Vector3Int& _lhs, const Vector3Int& _rhs) {
-    return (float)std::sqrt((_rhs.x - _lhs.x) * (_rhs.x - _lhs.x) + (_rhs.y - _lhs.y) * (_rhs.y - _lhs.y) + (_rhs.z - _lhs.z) * (_rhs.z - _lhs.z));
+    return static_cast<float>(std::sqrt((_rhs.x - _lhs.x) * (_rhs.x - _lhs.x) + (_rhs.y - _lhs.y) * (_rhs.y - _lhs.y) + (_rhs.z - _lhs.z) * (_rhs.z - _lhs.z)));
 }
 
 int Vector3Int::dot(const Vector3Int& _lhs, const Vector3Int& _rhs) {
@@ -55,7 +56,7 @@ Vector3Int Vector3Int::cross(const Vector3Int& _lhs, const Vector3Int& _rhs) {
 }
 
 float Vector3Int::angle(Vector3Int const& _from, Vector3Int const& _to) {
-    const float delta = (float)dot(_from, _to);
+    const float delta = static_cast<float>(dot(_from, _to));
     return std::acos(delta / (_from.magnitude() * _to.magnitude()));
 }
 
@@ -63,78 +64,79 @@ Vector3Int Vector3Int::zero()    { return { 0,  0,  0  }; }
 Vector3Int Vector3Int::one()     { return { 1,  1,  1  }; }
 Vector3Int Vector3Int::right()   { return { 1,  0,  0  }; }
 Vector3Int Vector3Int::left()    { return { -1, 0,  0  }; }
-Vector3Int Vector3Int::upVector()      { return { 0,  1,  0  }; }
+Vector3Int Vector3Int::up()      { return { 0,  1,  0  }; }
 Vector3Int Vector3Int::down()    { return { 0,  -1, 0  }; }
 Vector3Int Vector3Int::forward() { return { 0,  0,  1  }; }
 Vector3Int Vector3Int::back()    { return { 0,  0,  -1 }; }
 
-Vector3Int& Vector3Int::operator+=(const Vector3Int& _v) {
+void Vector3Int::operator+=(const Vector3Int& _v) {
     *this = *this + _v;
-    return *this;
 }
-Vector3Int operator+(const Vector3Int& _lhs, const Vector3Int& _rhs) {
+Vector3Int Vector3Int::operator+(const Vector3Int& _v) const {
     return {
-        _lhs.x + _rhs.x,
-        _lhs.y + _rhs.y,
-        _lhs.z + _rhs.z
+        x + _v.x,
+        y + _v.y,
+        z + _v.z
     };
 }
 
-Vector3Int& Vector3Int::operator-=(const Vector3Int& _v) {
+void Vector3Int::operator-=(const Vector3Int& _v) {
     *this = *this - _v;
-    return *this;
 }
-Vector3Int operator-(const Vector3Int& _lhs, const Vector3Int& _rhs) {
+Vector3Int Vector3Int::operator-(const Vector3Int& _v) const {
     return {
-        _lhs.x - _rhs.x,
-        _lhs.y - _rhs.y,
-        _lhs.z - _rhs.z
+        x - _v.x,
+        y - _v.y,
+        z - _v.z
     };
 }
-Vector3Int Vector3Int::operator-() {
-    *this = -1 * *this;
-    return *this;
+Vector3Int Vector3Int::operator-() const {
+    return {
+        -x,
+        -y,
+        -z
+    };
 }
 
-Vector3Int& Vector3Int::operator*=(const int _s) {
+void Vector3Int::operator*=(const int _s) {
     *this = *this * _s;
-    return *this;
 }
-Vector3Int operator*(const Vector3Int& _v, const int _s) {
+Vector3Int Vector3Int::operator*(const int _s) const {
     return {
-        _v.x * _s,
-        _v.y * _s,
-        _v.z * _s
+        x * _s,
+        y * _s,
+        z * _s
     };
 }
 Vector3Int operator*(const int _s, const Vector3Int& _v) {
     return _v * _s;
 }
 
-Vector3Int& Vector3Int::operator/=(const int _s) {
+void Vector3Int::operator/=(const int _s) {
     *this = *this / _s;
-    return *this;
 }
-Vector3Int operator/(const Vector3Int& _v, const int _s) {
+Vector3Int Vector3Int::operator/(const int _s) const {
     return {
-        _v.x / _s,
-        _v.y / _s,
-        _v.z / _s
+        x / _s,
+        y / _s,
+        z / _s
     };
 }
 
-bool operator==(const Vector3Int& _lhs, const Vector3Int& _rhs) {
-    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z);
+bool Vector3Int::operator==(const Vector3Int& _v) const {
+    return ZMath::isApproxEqual(x, _v.x) &&
+           ZMath::isApproxEqual(y, _v.y) &&
+           ZMath::isApproxEqual(z, _v.z);
 }
-bool operator!=(const Vector3Int& _lhs, const Vector3Int& _rhs) {
-    return !(_lhs == _rhs);
+bool Vector3Int::operator!=(const Vector3Int& _v) const {
+    return !(*this == _v);
 }
 
 int Vector3Int::operator[](const size_t _i) const {
     switch(_i) {
-        case 0: return x;
-        case 1: return y;
-        case 2: return z;
-        default: throw std::out_of_range("Invalid index.");
+    case 0: return x;
+    case 1: return y;
+    case 2: return z;
+    default: throw std::out_of_range("Invalid index.");
     }
 }

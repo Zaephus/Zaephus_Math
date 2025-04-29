@@ -1,15 +1,13 @@
 
 #pragma once
 
-// #include <string>
-// #include <format>
+#include <iosfwd>
 
 struct Vector3;
 struct Vector4;
 struct Quaternion;
 
 struct Matrix4x4 {
-
     float m00 = 0, m01 = 0, m02 = 0, m03 = 0;
     float m10 = 0, m11 = 0, m12 = 0, m13 = 0;
     float m20 = 0, m21 = 0, m22 = 0, m23 = 0;
@@ -56,42 +54,30 @@ struct Matrix4x4 {
     static Matrix4x4 one();
     static Matrix4x4 identity();
 
-    Matrix4x4& operator+=(const Matrix4x4& _m);
-    friend Matrix4x4 operator+(const Matrix4x4& _lhs, const Matrix4x4& _rhs);
+    void operator+=(const Matrix4x4& _m);
+    Matrix4x4 operator+(const Matrix4x4& _m) const;
 
-    Matrix4x4& operator-=(const Matrix4x4& _m);
-    friend Matrix4x4 operator-(const Matrix4x4& _lhs, const Matrix4x4& _rhs);
-    Matrix4x4& operator-();
+    void operator-=(const Matrix4x4& _m);
+    Matrix4x4 operator-(const Matrix4x4& _m) const;
+    Matrix4x4 operator-() const;
 
-    Matrix4x4& operator*=(const Matrix4x4& _m);
-    friend Matrix4x4 operator*(const Matrix4x4& _lhs, const Matrix4x4& _rhs);
+    void operator*=(const Matrix4x4& _m);
+    Matrix4x4 operator*(const Matrix4x4& _m) const;
 
-    friend Vector4 operator*(const Matrix4x4& _m, const Vector4& _v);
-    friend Vector3 operator*(const Matrix4x4& _m, const Vector3& _v);
+    Vector4 operator*(const Vector4& _v) const;
+    Vector3 operator*(const Vector3& _v) const;
 
-    Matrix4x4& operator*=(float _s);
-    friend Matrix4x4 operator*(const Matrix4x4& _m, float _s);
+    void operator*=(float _s);
+    Matrix4x4 operator*(float _s) const;
     friend Matrix4x4 operator*(float _s, const Matrix4x4& _m);
 
-    Matrix4x4& operator/=(float _s);
-    friend Matrix4x4 operator/(const Matrix4x4& _m, float _s);
+    void operator/=(float _s);
+    Matrix4x4 operator/(float _s) const;
 
     Matrix4x4& operator=(const Matrix4x4& _m) = default;
 
-    friend bool operator==(const Matrix4x4& _lhs, const Matrix4x4& _rhs);
-    friend bool operator!=(const Matrix4x4& _lhs, const Matrix4x4& _rhs);
+    bool operator==(const Matrix4x4& _m) const;
+    bool operator!=(const Matrix4x4& _m) const;
 
     Vector4 operator[](size_t _i) const;
-
-};
-
-template<>
-struct std::formatter<Matrix4x4> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Matrix4x4& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

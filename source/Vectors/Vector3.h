@@ -1,11 +1,9 @@
 
 #pragma once
 
-// #include <string>
-// #include <format>
+#include <iosfwd>
 
 struct Vector3 {
-
     float x = 0;
     float y = 0;
     float z = 0;
@@ -34,40 +32,29 @@ struct Vector3 {
     static Vector3 one();
     static Vector3 right();
     static Vector3 left();
-    static Vector3 upVector();
+    static Vector3 up();
     static Vector3 down();
     static Vector3 forward();
     static Vector3 back();
 
-    Vector3& operator+=(const Vector3& _v);
-    friend Vector3 operator+(const Vector3& _lhs, const Vector3& _rhs);
+    void operator+=(const Vector3& _v);
+    Vector3 operator+(const Vector3& _v) const;
 
-    Vector3& operator-=(const Vector3& _v);
-    friend Vector3 operator-(const Vector3& _lhs, const Vector3& _rhs);
-    Vector3 operator-();
+    void operator-=(const Vector3& _v);
+    Vector3 operator-(const Vector3& _v) const;
+    Vector3 operator-() const;
 
-    Vector3& operator*=(float _s);
-    friend Vector3 operator*(const Vector3& _v, float _s);
+    void operator*=(float _s);
+    Vector3 operator*(float _s) const;
     friend Vector3 operator*(float _s, const Vector3& _v);
 
-    Vector3& operator/=(float _s);
-    friend Vector3 operator/(const Vector3& _v, float _s);
+    void operator/=(float _s);
+    Vector3 operator/(float _s) const;
 
     Vector3& operator=(const Vector3& _v) = default;
 
-    friend bool operator==(const Vector3& _lhs, const Vector3& _rhs);
-    friend bool operator!=(const Vector3& _lhs, const Vector3& _rhs);
+    bool operator==(const Vector3& _v) const;
+    bool operator!=(const Vector3& _v) const;
 
     float operator[](size_t _i) const;
-};
-
-template<>
-struct std::formatter<Vector3> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Vector3& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

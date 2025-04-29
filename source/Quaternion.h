@@ -1,11 +1,12 @@
 
 #pragma once
 
+#include <iosfwd>
+
 struct Vector3;
 struct Vector4;
 
 struct Quaternion {
-
     float x = 0;
     float y = 0;
     float z = 0;
@@ -42,42 +43,30 @@ struct Quaternion {
 
     static Quaternion identity();
 
-    Quaternion& operator+=(const Quaternion& _q);
-    friend Quaternion operator+(const Quaternion& _lhs, const Quaternion& _rhs);
+    void operator+=(const Quaternion& _q);
+    Quaternion operator+(const Quaternion& _q) const;
 
-    Quaternion& operator-=(const Quaternion& _q);
-    friend Quaternion operator-(const Quaternion& _lhs, const Quaternion& _rhs);
-    Quaternion operator-();
+    void operator-=(const Quaternion& _q);
+    Quaternion operator-(const Quaternion& _q) const;
+    Quaternion operator-() const;
 
-    Quaternion operator*=(const Quaternion& _q);
-    friend Quaternion operator*(const Quaternion& _lhs, const Quaternion& _rhs);
+    void operator*=(const Quaternion& _q);
+    Quaternion operator*(const Quaternion& _q) const;
 
-    friend Vector4 operator*(const Quaternion& _q, const Vector4& _v);
-    friend Vector3 operator*(const Quaternion& _q, const Vector3& _v);
+    Vector4 operator*(const Vector4& _v) const;
+    Vector3 operator*(const Vector3& _v) const;
 
-    Quaternion& operator*=(float _s);
-    friend Quaternion operator*(const Quaternion& _v, float _s);
-    friend Quaternion operator*(float _s, const Quaternion& _v);
+    void operator*=(float _s);
+    Quaternion operator*(float _s) const;
+    friend Quaternion operator*(float _s, const Quaternion& _q);
 
-    Quaternion& operator/=(float _s);
-    friend Quaternion operator/(const Quaternion& _v, float _s);
+    void operator/=(float _s);
+    Quaternion operator/(float _s) const;
 
     Quaternion& operator=(const Quaternion& _v) = default;
 
-    friend bool operator==(const Quaternion& _lhs, const Quaternion& _rhs);
-    friend bool operator!=(const Quaternion& _lhs, const Quaternion& _rhs);
+    bool operator==(const Quaternion& _q) const;
+    bool operator!=(const Quaternion& _q) const;
 
     float operator[](size_t _i) const;
-
-};
-
-template<>
-struct std::formatter<Quaternion> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Quaternion& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };

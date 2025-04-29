@@ -1,9 +1,9 @@
 
-#include <iostream>
+#include "Vector3.h"
+
 #include <format>
 
 #include "../ZMath.h"
-
 
 Vector3::Vector3() {
     *this = zero();
@@ -66,71 +66,72 @@ Vector3 Vector3::zero()    { return { 0.0f,  0.0f,  0.0f  }; }
 Vector3 Vector3::one()     { return { 1.0f,  1.0f,  1.0f  }; }
 Vector3 Vector3::right()   { return { 1.0f,  0.0f,  0.0f  }; }
 Vector3 Vector3::left()    { return { -1.0f, 0.0f,  0.0f  }; }
-Vector3 Vector3::upVector()      { return { 0.0f,  1.0f,  0.0f  }; }
+Vector3 Vector3::up()      { return { 0.0f,  1.0f,  0.0f  }; }
 Vector3 Vector3::down()    { return { 0.0f,  -1.0f, 0.0f  }; }
 Vector3 Vector3::forward() { return { 0.0f,  0.0f,  1.0f  }; }
 Vector3 Vector3::back()    { return { 0.0f,  0.0f,  -1.0f }; }
 
-Vector3& Vector3::operator+=(const Vector3& _v) {
+void Vector3::operator+=(const Vector3& _v) {
     *this = *this + _v;
-    return *this;
 }
-Vector3 operator+(const Vector3& _lhs, const Vector3& _rhs) {
+Vector3 Vector3::operator+(const Vector3& _v) const {
     return {
-        _lhs.x + _rhs.x,
-        _lhs.y + _rhs.y,
-        _lhs.z + _rhs.z
+        x + _v.x,
+        y + _v.y,
+        z + _v.z
     };
 }
 
-Vector3& Vector3::operator-=(const Vector3& _v) {
+void Vector3::operator-=(const Vector3& _v) {
     *this = *this - _v;
-    return *this;
 }
-Vector3 operator-(const Vector3& _lhs, const Vector3& _rhs) {
+Vector3 Vector3::operator-(const Vector3& _v) const {
     return {
-        _lhs.x - _rhs.x,
-        _lhs.y - _rhs.y,
-        _lhs.z - _rhs.z
+        x - _v.x,
+        y - _v.y,
+        z - _v.z
     };
 }
-Vector3 Vector3::operator-() {
-    *this = -1 * *this;
-    return *this;
+Vector3 Vector3::operator-() const {
+    return {
+        -x,
+        -y,
+        -z
+    };
 }
 
-Vector3& Vector3::operator*=(const float _s) {
+void Vector3::operator*=(const float _s) {
     *this = *this * _s;
-    return *this;
 }
-Vector3 operator*(const Vector3& _v, const float _s) {
+Vector3 Vector3::operator*(const float _s) const {
     return {
-        _v.x * _s,
-        _v.y * _s,
-        _v.z * _s
+        x * _s,
+        y * _s,
+        z * _s
     };
 }
 Vector3 operator*(const float _s, const Vector3& _v) {
     return _v * _s;
 }
 
-Vector3& Vector3::operator/=(const float _s) {
+void Vector3::operator/=(const float _s) {
     *this = *this / _s;
-    return *this;
 }
-Vector3 operator/(const Vector3& _v, const float _s) {
+Vector3 Vector3::operator/(const float _s) const {
     return {
-        _v.x / _s,
-        _v.y / _s,
-        _v.z / _s
+        x / _s,
+        y / _s,
+        z / _s
     };
 }
 
-bool operator==(const Vector3& _lhs, const Vector3& _rhs) {
-    return ZMath::isRelativelyEqual(_lhs.x, _rhs.x) && ZMath::isRelativelyEqual(_lhs.y, _rhs.y) && ZMath::isRelativelyEqual(_lhs.z, _rhs.z);
+bool Vector3::operator==(const Vector3& _v) const {
+    return ZMath::isApproxEqual(x, _v.x) &&
+           ZMath::isApproxEqual(y, _v.y) &&
+           ZMath::isApproxEqual(z, _v.z);
 }
-bool operator!=(const Vector3& _lhs, const Vector3& _rhs) {
-    return !(_lhs == _rhs);
+bool Vector3::operator!=(const Vector3& _v) const {
+    return !(*this == _v);
 }
 
 float Vector3::operator[](const size_t _i) const {

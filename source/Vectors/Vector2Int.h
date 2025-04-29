@@ -4,16 +4,8 @@
 #include <iosfwd>
 
 struct Vector2Int {
-
     int x = 0;
     int y = 0;
-
-    static Vector2Int zero;
-    static Vector2Int one;
-    static Vector2Int right;
-    static Vector2Int left;
-    static Vector2Int up;
-    static Vector2Int down;
 
     Vector2Int();
     explicit Vector2Int(const int _x) : Vector2Int(_x, _x) {}
@@ -35,6 +27,13 @@ struct Vector2Int {
 
     static float angle(const Vector2Int& _from, const Vector2Int& _to);
 
+    static Vector2Int zero();
+    static Vector2Int one();
+    static Vector2Int right();
+    static Vector2Int left();
+    static Vector2Int up();
+    static Vector2Int down();
+
     void operator+=(const Vector2Int& _v);
     Vector2Int operator+(const Vector2Int& _v) const;
 
@@ -44,6 +43,7 @@ struct Vector2Int {
 
     void operator*=(int _s);
     Vector2Int operator*(int _s) const;
+    friend Vector2Int operator*(float _s, const Vector2Int& _v);
 
     void operator/=(int _s);
     Vector2Int operator/(int _s) const;
@@ -54,5 +54,4 @@ struct Vector2Int {
     bool operator!=(const Vector2Int& _v) const;
 
     int operator[](size_t _i) const;
-
 };

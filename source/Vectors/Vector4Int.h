@@ -1,13 +1,11 @@
 
 #pragma once
 
-// #include <string>
-// #include <format>
+#include <iosfwd>
 
 struct Vector3Int;
 
 struct Vector4Int {
-
     int x = 0;
     int y = 0;
     int z = 0;
@@ -37,36 +35,24 @@ struct Vector4Int {
     static Vector4Int zero();
     static Vector4Int one();
 
-    Vector4Int& operator+=(const Vector4Int& _v);
-    friend Vector4Int operator+(const Vector4Int& _lhs, const Vector4Int& _rhs);
+    void operator+=(const Vector4Int& _v);
+    Vector4Int operator+(const Vector4Int& _v) const;
 
-    Vector4Int& operator-=(const Vector4Int& _v);
-    friend Vector4Int operator-(const Vector4Int& _lhs, const Vector4Int& _rhs);
-    Vector4Int operator-();
+    void operator-=(const Vector4Int& _v);
+    Vector4Int operator-(const Vector4Int& _v) const;
+    Vector4Int operator-() const;
 
-    Vector4Int& operator*=(int _s);
-    friend Vector4Int operator*(const Vector4Int& _v, int _s);
+    void operator*=(int _s);
+    Vector4Int operator*(int _s) const;
     friend Vector4Int operator*(int _s, const Vector4Int& _v);
 
-    Vector4Int& operator/=(int _s);
-    friend Vector4Int operator/(const Vector4Int& _v, int _s);
+    void operator/=(int _s);
+    Vector4Int operator/(int _s) const;
 
     Vector4Int& operator=(const Vector4Int& _v) = default;
 
-    friend bool operator==(const Vector4Int& _lhs, const Vector4Int& _rhs);
-    friend bool operator!=(const Vector4Int& _lhs, const Vector4Int& _rhs);
+    bool operator==(const Vector4Int& _v) const;
+    bool operator!=(const Vector4Int& _v) const;
 
     int operator[](size_t _i) const;
-
-};
-
-template<>
-struct std::formatter<Vector4Int> {
-    static constexpr auto parse(const std::format_parse_context& _ctx) {
-        return _ctx.begin();
-    }
-
-    static auto format(const Vector4Int& _v, std::format_context& _ctx) {
-        return std::format_to(_ctx.out(), "{}", _v.toString());
-    }
 };
