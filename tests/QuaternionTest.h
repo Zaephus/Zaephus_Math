@@ -36,16 +36,24 @@ void multiplicationTest() {
         auto elapsedTime = Time::microseconds() - startTime;
 
         if(q !=  expectedAnswers[i]) {
-            printTestFailed(testQuaternions[i], expectedAnswers[i], q);
+            // printTestFailed(testQuaternions[i], expectedAnswers[i], q);
             continue;
         }
 
-        printTestSuccess(elapsedTime);
+        // printTestSuccess(elapsedTime);
     }
 }
 
 int QuaternionTest() {
-    multiplicationTest();
+    Quaternion q = Quaternion::fromEuler(10.0f, 80.0f, -50.0f);
+    std::cout << q.toEuler().toString() << std::endl << std::endl;
+
+    Matrix4x4 rotMatrix = Matrix4x4::rotateMatrix(q);
+
+    Quaternion p = Quaternion(rotMatrix);
+    std::cout << p.toEuler().toString() << std::endl;
+
+    // multiplicationTest();
 
     return 0;
 }

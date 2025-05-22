@@ -282,20 +282,28 @@ Matrix4x4 Matrix4x4::rotateMatrix(const Quaternion& _q) {
         return identity();
     }
 
+    const float d = _q.magnitude();
+    const float s = 2.0f / d;
+
+    const float xs = _q.x * s, ys = _q.y * s, zs = _q.z * s;
+    const float wx = _q.w * xs, wy = _q.w * ys, wz = _q.w * zs;
+    const float xx = _q.x * xs, xy = _q.x * ys, xz = _q.x * zs;
+    const float yy = _q.y * ys, yz = _q.y * zs, zz = _q.z * zs;
+
     return {
-        _q.w * _q.w + _q.x * _q.x - _q.y * _q.y - _q.z * _q.z,
-        2 * _q.x * _q.y - 2 * _q.w * _q.z,
-        2 * _q.x * _q.z + 2 * _q.w * _q.y,
+        1.0f - (yy + zz),
+        xy - wz,
+        xz + wy,
         0.0f,
 
-        2 * _q.x * _q.y + 2 * _q.w * _q.z,
-        _q.w * _q.w - _q.x * _q.x + _q.y * _q.y - _q.z * _q.z,
-        2 * _q.y * _q.z - 2 * _q.w * _q.x,
+        xy + wz,
+        1.0f - (xx + zz),
+        yz - wx,
         0.0f,
 
-        2 * _q.x * _q.z - 2 * _q.w * _q.y,
-        2 * _q.y * _q.z + 2 * _q.w * _q.x,
-        _q.w * _q.w - _q.x * _q.x - _q.y * _q.y + _q.z * _q.z,
+        xz - wy,
+        yz + wx,
+        1.0f - (xx + yy),
         0.0f,
 
         0.0f,

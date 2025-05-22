@@ -16,6 +16,41 @@ Quaternion::Quaternion(const Quaternion& _q) {
     z = _q.z;
     w = _q.w;
 }
+Quaternion::Quaternion(const Matrix4x4& _m) {
+    const float trace = _m.m00 + _m.m11 + _m.m22;
+    float temp[4];
+
+    std::cout << "Trace: " << trace << std::endl;
+    if(trace > 0.0f) {
+        float s = std::sqrt(trace + 1.0f);
+        temp[3] = s * 0.5f;
+        s = 0.5f / s;
+
+        temp[0] = (_m.m21 - _m.m12) * s;
+        temp[1] = (_m.m02 - _m.m20) * s;
+        temp[2] = (_m.m10 - _m.m01) * s;
+    }
+    else {
+        const int i = _m.m00 < _m.m11
+                ? (_m.m11 < _m.m22 ? 2 : 1)
+                : (_m.m00 < _m.m22 ? 2 : 0);
+        const int j = (i + 1) % 3;
+        const int k = (i + 2) % 3;
+
+        float s = std::sqrt(_m[i][i] - _m[j][j] - _m[k][k] + 1.0f);
+        temp[i] = s * 0.5f;
+        s = 0.5f / s;
+
+        temp[3] = (_m[k][j] - _m[j][k]) * s;
+        temp[j] = (_m[j][i] + _m[i][j]) * s;
+        temp[k] = (_m[k][i] + _m[i][k]) * s;
+    }
+
+    x = temp[0];
+    y = temp[1];
+    z = temp[2];
+    w = temp[3];
+}
 Quaternion::Quaternion(const float _x, const float _y, const float _z, const float _w) {
     x = _x;
     y = _y;

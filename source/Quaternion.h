@@ -5,6 +5,7 @@
 
 struct Vector3;
 struct Vector4;
+struct Matrix4x4;
 
 struct Quaternion {
     float x = 0;
@@ -15,6 +16,7 @@ struct Quaternion {
     Quaternion();
     explicit Quaternion(const float _x) : Quaternion(_x, _x, _x, _x) {}
     Quaternion(const Quaternion& _q);
+    explicit Quaternion(const Matrix4x4& _m);
     Quaternion(float _x, float _y, float _z, float _w);
 
     [[nodiscard]] std::string toString() const;
@@ -53,7 +55,6 @@ struct Quaternion {
     void operator*=(const Quaternion& _q);
     Quaternion operator*(const Quaternion& _q) const;
 
-    Vector4 operator*(const Vector4& _v) const;
     Vector3 operator*(const Vector3& _v) const;
 
     void operator*=(float _s);
