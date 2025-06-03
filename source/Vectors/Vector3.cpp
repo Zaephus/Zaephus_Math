@@ -1,6 +1,7 @@
 
 #include "Vector3.h"
 
+#include <iostream>
 #include <format>
 
 #include "../ZMath.h"
@@ -58,10 +59,22 @@ Vector3 Vector3::cross(const Vector3& _lhs, const Vector3& _rhs) {
     };
 }
 
-float Vector3::angle(Vector3 const& _from, Vector3 const& _to) {
+float Vector3::angle(const Vector3& _from, const Vector3& _to) {
     const float delta = dot(_from, _to);
     return std::acos(delta / (_from.magnitude() * _to.magnitude()));
 }
+
+float Vector3::signedAngle(const Vector3& _from, const Vector3& _to) {
+    return signedAngle(_from, _to, up());
+}
+
+float Vector3::signedAngle(const Vector3& _from, const Vector3& _to, const Vector3& _axis) {
+    const float unsignedAngle = angle(_from, _to);
+
+    if(dot(_axis, cross(_from, _to)) < 0) { return -unsignedAngle; }
+    return unsignedAngle;
+}
+
 Vector3 Vector3::zero()    { return { 0.0f,  0.0f,  0.0f  }; }
 Vector3 Vector3::one()     { return { 1.0f,  1.0f,  1.0f  }; }
 Vector3 Vector3::right()   { return { 1.0f,  0.0f,  0.0f  }; }

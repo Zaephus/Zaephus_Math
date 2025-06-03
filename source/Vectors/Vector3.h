@@ -26,7 +26,9 @@ struct Vector3 {
     static float dot(const Vector3& _lhs, const Vector3& _rhs);
     static Vector3 cross(const Vector3& _lhs, const Vector3& _rhs);
 
-    static float angle(Vector3 const& _from, Vector3 const& _to);
+    static float angle(const Vector3& _from, const Vector3& _to);
+    static float signedAngle(const Vector3& _from, const Vector3& _to);
+    static float signedAngle(const Vector3& _from, const Vector3& _to, const Vector3& _axis);
 
     static Vector3 zero();
     static Vector3 one();
