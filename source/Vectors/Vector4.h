@@ -2,6 +2,7 @@
 #pragma once
 
 #include <iosfwd>
+#include <string>
 
 struct Vector3;
 

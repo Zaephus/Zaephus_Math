@@ -2,6 +2,7 @@
 #pragma once
 
 #include <iosfwd>
+#include <string>
 
 struct Vector3Int {
     int x = 0;
