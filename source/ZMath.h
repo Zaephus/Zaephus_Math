@@ -41,6 +41,12 @@ class ZMath {
             return _value;
         }
 
+        template <typename T>
+        static T smoothStep(const T _value, const T _min, const T _max) {
+            T val = clamp((_value - _min) / (_max - _min), static_cast<T>(0.0f), static_cast<T>(1.0f));
+            return val * val * (3.0f - 2.0f * val);
+        }
+
         static float lerp(const float _a, const float _b, const float _t) {
             return _a + (_b - _a) * clamp01(_t);
         }
