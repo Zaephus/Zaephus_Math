@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <functional>
 #include <iosfwd>
 #include <string>
 
@@ -60,4 +61,17 @@ struct Vector3 {
     bool operator!=(const Vector3& _v) const;
 
     float operator[](size_t _i) const;
+};
+
+template<>
+struct std::hash<Vector3> {
+    size_t operator()(const Vector3& _vector) const noexcept {
+        size_t result = 0;
+
+        result ^= std::hash<float>{}(_vector.x) + 0x9e3779b9 + (result << 6) + (result >> 2);
+        result ^= std::hash<float>{}(_vector.y) + 0x9e3779b9 + (result << 6) + (result >> 2);
+        result ^= std::hash<float>{}(_vector.z) + 0x9e3779b9 + (result << 6) + (result >> 2);
+
+        return result;
+    }
 };
