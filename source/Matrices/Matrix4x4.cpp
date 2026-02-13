@@ -43,7 +43,7 @@ Matrix4x4::Matrix4x4(const Vector4& _row0, const Vector4& _row1, const Vector4& 
     m30 = _row3.x; m31 = _row3.y; m32 = _row3.z; m33 = _row3.w;
 }
 
-[[nodiscard]] Vector4 Matrix4x4::getRow(const size_t _index) const {
+[[nodiscard]] Vector4 Matrix4x4::getRow(const unsigned int _index) const {
     switch(_index) {
         case 0:
             return { m00, m01, m02, m03 };
@@ -58,7 +58,7 @@ Matrix4x4::Matrix4x4(const Vector4& _row0, const Vector4& _row1, const Vector4& 
     }
 }
 
-[[nodiscard]] Vector4 Matrix4x4::getColumn(const size_t _index) const {
+[[nodiscard]] Vector4 Matrix4x4::getColumn(const unsigned int _index) const {
     switch(_index) {
         case 0:
             return { m00, m10, m20, m30 };
@@ -73,7 +73,7 @@ Matrix4x4::Matrix4x4(const Vector4& _row0, const Vector4& _row1, const Vector4& 
     }
 }
 
-void Matrix4x4::setRow(const size_t _index, const Vector4& _row) {
+void Matrix4x4::setRow(const unsigned int _index, const Vector4& _row) {
     switch(_index) {
         case 0:
             m00 = _row.x; m01 = _row.y; m02 = _row.z; m03 = _row.w;
@@ -92,7 +92,7 @@ void Matrix4x4::setRow(const size_t _index, const Vector4& _row) {
     }
 }
 
-void Matrix4x4::setColumn(const size_t _index, const Vector4& _column) {
+void Matrix4x4::setColumn(const unsigned int _index, const Vector4& _column) {
     switch(_index) {
         case 0:
             m00 = _column.x; m10 = _column.y; m20 = _column.z; m30 = _column.w;
@@ -261,24 +261,24 @@ float Matrix4x4::determinant(
 
 Matrix4x4 Matrix4x4::scaleMatrix(const Vector3& _v) {
     return {
-        _v.x, 0, 0, 0,
-        0, _v.y, 0, 0,
-        0, 0, _v.z, 0,
-        0, 0, 0, 1
+        _v.x, 0.0f, 0.0f, 0.0f,
+        0.0f, _v.y, 0.0f, 0.0f,
+        0.0f, 0.0f, _v.z, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
     };
 }
 
 Matrix4x4 Matrix4x4::translateMatrix(const Vector3& _v) {
     return {
-        1, 0, 0, _v.x,
-        0, 1, 0, _v.y,
-        0, 0, 1, _v.z,
-        0, 0, 0, 1
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        _v.x, _v.y, _v.z, 1.0f
     };
 }
 
 Matrix4x4 Matrix4x4::rotateMatrix(const Quaternion& _q) {
-    if(_q == Quaternion(0, 0, 0, 0)) {
+    if(_q == Quaternion(0.0f, 0.0f, 0.0f, 0.0f)) {
         return identity();
     }
 
@@ -290,53 +290,50 @@ Matrix4x4 Matrix4x4::rotateMatrix(const Quaternion& _q) {
     const float xx = _q.x * xs, xy = _q.x * ys, xz = _q.x * zs;
     const float yy = _q.y * ys, yz = _q.y * zs, zz = _q.z * zs;
 
+    const float a00 = 1.0f - (yy + zz);
+    const float a01 = xy - wz;
+    const float a02 = xz + wy;
+
+    const float a10 = xy + wz;
+    const float a11 = 1.0f - (xx + zz);
+    const float a12 = yz - wx;
+
+    const float a20 = xz - wy;
+    const float a21 = yz + wx;
+    const float a22 = 1.0f - (xx + yy);
+
     return {
-        1.0f - (yy + zz),
-        xy - wz,
-        xz + wy,
-        0.0f,
-
-        xy + wz,
-        1.0f - (xx + zz),
-        yz - wx,
-        0.0f,
-
-        xz - wy,
-        yz + wx,
-        1.0f - (xx + yy),
-        0.0f,
-
-        0.0f,
-        0.0f,
-        0.0f,
-        1.0f
+        a00,  a01,  a02,  0.0f,
+        a10,  a11,  a12,  0.0f,
+        a20,  a21,  a22,  0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
     };
 }
 
 Matrix4x4 Matrix4x4::zero() {
     return {
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f
     };
 }
 
 Matrix4x4 Matrix4x4::one() {
     return {
-        1, 1, 1, 1,
-        1, 1, 1, 1,
-        1, 1, 1, 1,
-        1, 1, 1, 1
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f
     };
 }
 
 Matrix4x4 Matrix4x4::identity() {
     return {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
     };
 }
 
@@ -463,6 +460,6 @@ bool Matrix4x4::operator!=(const Matrix4x4& _m) const {
     return !(*this == _m);
 }
 
-Vector4 Matrix4x4::operator[](const size_t _i) const {
+Vector4 Matrix4x4::operator[](const unsigned int _i) const {
     return getRow(_i);
 }
