@@ -38,6 +38,10 @@ struct Matrix4x4 {
     [[nodiscard]] Matrix4x4 transposed() const;
     void transpose();
 
+    void flipX();
+    void flipY();
+    void flipZ();
+
     [[nodiscard]] float determinant() const;
     static float determinant(
         float _m00, float _m01, float _m02, float _m03,

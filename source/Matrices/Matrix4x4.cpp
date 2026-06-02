@@ -236,6 +236,10 @@ void Matrix4x4::transpose() {
     };
 }
 
+void Matrix4x4::flipX() { m00 *= -1; }
+void Matrix4x4::flipY() { m11 *= -1; }
+void Matrix4x4::flipZ() { m22 *= -1; }
+
 [[nodiscard]] float Matrix4x4::determinant() const {
     const float d1 = m11*m22*m33 + m12*m23*m31 + m13*m21*m32 - m13*m22*m31 - m12*m21*m33 - m11*m23*m32;
     const float d2 = m01*m22*m33 + m02*m23*m31 + m03*m21*m32 - m03*m22*m31 - m02*m21*m33 - m01*m23*m32;
