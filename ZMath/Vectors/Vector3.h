@@ -1,0 +1,78 @@
+
+#pragma once
+
+#include <functional>
+#include <iosfwd>
+#include <string>
+
+namespace ZMath {
+    struct Vector3 {
+        float x = 0;
+        float y = 0;
+        float z = 0;
+
+        Vector3();
+        explicit Vector3(const float _x) : Vector3(_x, _x, _x) {}
+        Vector3(float _x, float _y, float _z);
+        Vector3(const Vector3& _v);
+
+        std::string toString() const;
+
+        float magnitude() const;
+        float squaredMagnitude() const;
+
+        Vector3 normalized() const;
+        void normalize();
+
+        static float distance(const Vector3& _lhs, const Vector3& _rhs);
+
+        static float dot(const Vector3& _lhs, const Vector3& _rhs);
+        static Vector3 cross(const Vector3& _lhs, const Vector3& _rhs);
+
+        static float angle(const Vector3& _from, const Vector3& _to);
+        static float signedAngle(const Vector3& _from, const Vector3& _to);
+        static float signedAngle(const Vector3& _from, const Vector3& _to, const Vector3& _axis);
+
+        static Vector3 zero();
+        static Vector3 one();
+        static Vector3 right();
+        static Vector3 left();
+        static Vector3 up();
+        static Vector3 down();
+        static Vector3 forward();
+        static Vector3 back();
+
+        void operator+=(const Vector3& _v);
+        Vector3 operator+(const Vector3& _v) const;
+
+        void operator-=(const Vector3& _v);
+        Vector3 operator-(const Vector3& _v) const;
+        Vector3 operator-() const;
+
+        void operator*=(float _s);
+        Vector3 operator*(float _s) const;
+
+        void operator/=(float _s);
+        Vector3 operator/(float _s) const;
+
+        Vector3& operator=(const Vector3& _v) = default;
+
+        bool operator==(const Vector3& _v) const;
+        bool operator!=(const Vector3& _v) const;
+
+        float operator[](size_t _i) const;
+    };
+}
+
+template<>
+struct std::hash<ZMath::Vector3> {
+    size_t operator()(const ZMath::Vector3& _vector) const noexcept {
+        size_t result = 0;
+
+        result ^= std::hash<float>{}(_vector.x) + 0x9e3779b9 + (result << 6) + (result >> 2);
+        result ^= std::hash<float>{}(_vector.y) + 0x9e3779b9 + (result << 6) + (result >> 2);
+        result ^= std::hash<float>{}(_vector.z) + 0x9e3779b9 + (result << 6) + (result >> 2);
+
+        return result;
+    }
+};
